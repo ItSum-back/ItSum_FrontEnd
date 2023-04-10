@@ -12,8 +12,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        button.setOnClickListener {
+        login_btn.setOnClickListener {
             val intent = Intent(this, MainActivity2::class.java)
+            startActivity(intent)
+        }
+        join_btn.setOnClickListener {
+            val intent = Intent(this, NewJoin::class.java)
             startActivity(intent)
         }
 
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
+
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
         return true
     }
 
