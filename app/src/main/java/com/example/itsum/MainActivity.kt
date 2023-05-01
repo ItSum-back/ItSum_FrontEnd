@@ -10,6 +10,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import com.kakao.sdk.common.util.Utility
 import android.widget.Button
+import android.widget.Toast
 import com.example.itsum.databinding.ActivityMainBinding
 import com.example.itsum.retrofit.APIService
 import com.example.itsum.retrofit.RetrofitConnection
@@ -27,6 +28,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         //해시키 구하기
         val keyHash = Utility.getKeyHash(this)
         Log.d("Hash", keyHash)
+
 
         binding.loginBtn.setOnClickListener {  //로그인버튼 눌렀을 때
             val intent = Intent(this, Home::class.java)
@@ -64,15 +67,31 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
-
-    private fun kakaoLogin() {
-        // 카카오계정으로 로그인 공통 callback 구성
-        // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
+    private fun ret(token: OAuthToken){
         var retrofit = Retrofit.Builder()
             .baseUrl("https://localhost:3306/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
         var kakaoRetro: APIService = retrofit.create(APIService::class.java)
+        kakaoRetro.kakaoLoginAuth(token.accessToken, token.idToken).enqueue(object : Callback<kakaoResponse>{
+            override fun onFailure(call: Call<kakaoResponse>, t: Throwable) {
+                //TextMsg(this@MainActivity, "retrofit 실패 \n\n")
+                println("실패")
+            }
+
+            override fun onResponse(
+                call: Call<kakaoResponse>,
+                response: Response<kakaoResponse>
+            ) {
+                println("성공")
+            }
+        })
+    }
+    private fun kakaoLogin() {
+        // 카카오계정으로 로그인 공통 callback 구성
+        // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
+        println("출력")
 
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
@@ -86,22 +105,9 @@ class MainActivity : AppCompatActivity() {
                                 "token: ${token.accessToken} \n\n " +
                                 "me: ${token.idToken}"
                     )
-
                     setLogin(true)
-                    kakaoRetro.kakaoLoginAuth(token.accessToken, token.idToken).enqueue(object : Callback<kakaoResponse>{
-                        override fun onFailure(call: Call<kakaoResponse>, t: Throwable) {
 
-                            TextMsg(this@MainActivity, "retrofit 실패 \n\n")
-                        }
 
-                        override fun onResponse(
-                            call: Call<kakaoResponse>,
-                            response: Response<kakaoResponse>
-                        ) {
-                            Log.d("성공", ""+response)
-
-                        }
-                    })
                     Log.d("tag", "token: ${token.accessToken}")
                 }
             }
@@ -124,6 +130,7 @@ class MainActivity : AppCompatActivity() {
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
                 } else if (token != null) {
                     TextMsg(this, "카카오톡으로 로그인 성공 ${token.accessToken}")
+                    ret(token)
                     setLogin(true)
                 }
             }

@@ -19,6 +19,7 @@ interface APIService {
       @Field("meetingWays ") meetingWays: String,
    ): Call<postDataClass>
 
+   @FormUrlEncoded
    @POST("/auth/kakao")
    fun kakaoLoginAuth(
       @Header("accessToken") accessToken: String,
