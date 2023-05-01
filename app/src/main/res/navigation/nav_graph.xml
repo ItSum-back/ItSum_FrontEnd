@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainActivity">
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.itsum.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <activity
+        android:id="@+id/newJoin"
+        android:name="com.example.itsum.NewJoin"
+        android:label="activity_new_join"
+        tools:layout="@layout/activity_new_join" />
+    <activity
+        android:id="@+id/mainActivity2"
+        android:name="com.example.itsum.MainActivity2"
+        android:label="activity_main2"
+        tools:layout="@layout/activity_main2" />
+    <activity
+        android:id="@+id/makeClub"
+        android:name="com.example.itsum.MakeClub"
+        android:label="activity_make_club"
+        tools:layout="@layout/activity_make_club" />
+    <activity
+        android:id="@+id/clubscreen"
+        android:name="com.example.itsum.Clubscreen"
+        android:label="activity_clubscreen"
+        tools:layout="@layout/activity_clubscreen" />
+    <activity
+        android:id="@+id/myPage"
+        android:name="com.example.itsum.MyPage"
+        android:label="activity_my_page"
+        tools:layout="@layout/activity_my_page" />
+</navigation>
