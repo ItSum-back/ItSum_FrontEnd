@@ -7,7 +7,7 @@
     tools:context=".Clubscreen">
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/clubScreenCloseBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@android:drawable/arrow_down_float"
@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/textView10"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginTop="120dp"
         android:gravity="center_vertical"
         android:text="제목"
@@ -31,7 +31,7 @@
     <LinearLayout
         android:id="@+id/linearLayout9"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +58,7 @@
     <LinearLayout
         android:id="@+id/linearLayout10"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginTop="32dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,7 +84,7 @@
     <LinearLayout
         android:id="@+id/linearLayout11"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +108,7 @@
     <LinearLayout
         android:id="@+id/linearLayout12"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +123,7 @@
             android:text="모집인원" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/recruitMemberCount"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="모집인원 내용" />
@@ -132,7 +132,7 @@
     <LinearLayout
         android:id="@+id/linearLayout13"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -156,7 +156,7 @@
     <LinearLayout
         android:id="@+id/linearLayout14"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -181,7 +181,7 @@
     <LinearLayout
         android:id="@+id/linearLayout15"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -205,7 +205,7 @@
     <LinearLayout
         android:id="@+id/linearLayout16"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -229,7 +229,7 @@
     <LinearLayout
         android:id="@+id/linearLayout17"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -253,7 +253,7 @@
     <TextView
         android:id="@+id/textView31"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginTop="32dp"
         android:layout_weight="1"
         android:text="모임 소개(타이틀임)"

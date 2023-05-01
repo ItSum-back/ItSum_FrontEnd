@@ -1,5 +1,6 @@
 package com.example.itsum
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -75,13 +76,20 @@ class MakeClub : AppCompatActivity() {
       clubPostService.requestClubPost(title,contents,positionList,personnel,techSkill,meetingWays).enqueue(object : Callback<postDataClass> {
         override fun onFailure(call: Call<postDataClass>, t: Throwable) {
           Log.d("통신실패", "메세지:"+t.message)
+          val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
+          finish()
+          startActivity(clubScreenIntent)
         }
 
         override fun onResponse(call: Call<postDataClass>, response: Response<postDataClass>) {
           var res = response.body()
           Log.d("통신성공","제목"+res?.title)
+          val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
+          startActivity(clubScreenIntent)
         }
+
       })
+
     }
   }
 }
