@@ -54,9 +54,21 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.menu_item1->Toast.makeText(this, "1실행",Toast.LENGTH_SHORT).show()
-            R.id.menu_item2->Toast.makeText(this, "2실행",Toast.LENGTH_SHORT).show()
-            R.id.menu_item3->Toast.makeText(this, "3실행",Toast.LENGTH_SHORT).show()
+            R.id.menu_item1 -> {
+                //모집만들기 눌렀을 때
+                val makeClubIntent = Intent(this, MakeClub::class.java)
+                startActivity(makeClubIntent)
+                return super.onOptionsItemSelected(item)
+            }
+            R.id.menu_item2 -> {
+                //모집만들기 눌렀을 때
+                val myPageIntent = Intent(this, MyPage::class.java)
+                startActivity(myPageIntent)
+                return super.onOptionsItemSelected(item)
+            }
+            R.id.menu_item3 ->{
+                //최근 모집(추가예정)
+            }
         }
         return false
     }

@@ -11,7 +11,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.kakao.sdk.common.util.Utility
 import android.widget.Button
 import com.example.itsum.databinding.ActivityMainBinding
+import com.example.itsum.retrofit.APIService
 import com.example.itsum.retrofit.RetrofitConnection
+import com.example.itsum.retrofit.kakaoResponse
 //import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
@@ -20,6 +22,11 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.*
 import com.kakao.sdk.common.model.AuthErrorCause.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -61,6 +68,12 @@ class MainActivity : AppCompatActivity() {
     private fun kakaoLogin() {
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
+        var retrofit = Retrofit.Builder()
+            .baseUrl("https://localhost:3306/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        var kakaoRetro: APIService = retrofit.create(APIService::class.java)
+
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.d("tag", "카카오계정으로 로그인 실패 : ${error}")
@@ -71,9 +84,24 @@ class MainActivity : AppCompatActivity() {
                     TextMsg(
                         this, "카카오계정으로 로그인 성공 \n\n " +
                                 "token: ${token.accessToken} \n\n " +
-                                "me: ${user}"
+                                "me: ${token.idToken}"
                     )
+
                     setLogin(true)
+                    kakaoRetro.kakaoLoginAuth(token.accessToken, token.idToken).enqueue(object : Callback<kakaoResponse>{
+                        override fun onFailure(call: Call<kakaoResponse>, t: Throwable) {
+
+                            TextMsg(this@MainActivity, "retrofit 실패 \n\n")
+                        }
+
+                        override fun onResponse(
+                            call: Call<kakaoResponse>,
+                            response: Response<kakaoResponse>
+                        ) {
+                            Log.d("성공", ""+response)
+
+                        }
+                    })
                     Log.d("tag", "token: ${token.accessToken}")
                 }
             }
