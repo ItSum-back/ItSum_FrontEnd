@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("Hash", keyHash)
 
         binding.loginBtn.setOnClickListener {  //로그인버튼 눌렀을 때
-            val intent = Intent(this, MainActivity2::class.java)
+            val intent = Intent(this, Home::class.java)
             startActivity(intent)
         }
         binding.joinBtn.setOnClickListener {   //회원가입 눌렀을 때
