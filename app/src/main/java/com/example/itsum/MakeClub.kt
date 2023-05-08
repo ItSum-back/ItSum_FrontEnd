@@ -59,7 +59,7 @@ class MakeClub : AppCompatActivity() {
     // 만약 수정하기로 들어온다 -> 서버에서 데이터 받아온 후 페이지 렌더링 및 데이터 뿌림
 
     var retrofit = Retrofit.Builder()
-      .baseUrl("https://localhost:3306/")
+      .baseUrl("https://localhost:8080")
       .addConverterFactory(GsonConverterFactory.create())
       .build()
     var clubPostService: APIService = retrofit.create(APIService::class.java)

@@ -21,7 +21,7 @@ class Clubscreen : AppCompatActivity() {
     var recruitMemberCount = findViewById<TextView>(R.id.recruitMemberCount)
 
     var retrofit = Retrofit.Builder()
-      .baseUrl("https://localhost:3306/")
+      .baseUrl("https://localhost:8080")
       .addConverterFactory(GsonConverterFactory.create())
       .build()
     var ClubGetService:APIService = retrofit.create(APIService::class.java)
