@@ -33,6 +33,7 @@ import kotlin.math.log
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+    private var tempTokenSave: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         KakaoSdk.init(this, getString(R.string.kakao_app_key))
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.loginBtn.setOnClickListener {  //로그인버튼 눌렀을 때
             val intent = Intent(this, Home::class.java)
+            intent.putExtra("accessToken", tempTokenSave)
             startActivity(intent)
         }
         binding.joinBtn.setOnClickListener {   //회원가입 눌렀을 때
@@ -68,23 +70,26 @@ class MainActivity : AppCompatActivity() {
         return true
     }
     private fun ret(token: OAuthToken){
+
         var retrofit = Retrofit.Builder()
-            .baseUrl("https://localhost:3306/")
+            .baseUrl("http://172.30.1.82:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         var kakaoRetro: APIService = retrofit.create(APIService::class.java)
-        kakaoRetro.kakaoLoginAuth(token.accessToken, token.idToken).enqueue(object : Callback<kakaoResponse>{
+        kakaoRetro.kakaoLoginAuth(token.accessToken).enqueue(object : Callback<kakaoResponse>{
             override fun onFailure(call: Call<kakaoResponse>, t: Throwable) {
                 //TextMsg(this@MainActivity, "retrofit 실패 \n\n")
                 println("실패")
+                Log.d("백엔드","메세지 + " +  t.message)
             }
 
             override fun onResponse(
                 call: Call<kakaoResponse>,
                 response: Response<kakaoResponse>
             ) {
-                println("성공")
+                tempTokenSave = response.body()?.appToken
+
             }
         })
     }
