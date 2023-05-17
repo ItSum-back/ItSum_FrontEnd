@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         KakaoSdk.init(this, getString(R.string.kakao_app_key))
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //setContentView(R.layout.activity_main)
 
         //해시키 구하기
         val keyHash = Utility.getKeyHash(this)
@@ -67,17 +66,20 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
+
+    // 서버 통신 확인
     private fun ret(token: OAuthToken){
         var retrofit = Retrofit.Builder()
-            .baseUrl("https://localhost:3306/")
+            .baseUrl("http://172.30.1.42:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         var kakaoRetro: APIService = retrofit.create(APIService::class.java)
-        kakaoRetro.kakaoLoginAuth(token.accessToken, token.idToken).enqueue(object : Callback<kakaoResponse>{
+        kakaoRetro.kakaoLoginAuth(token.accessToken).enqueue(object : Callback<kakaoResponse>{
             override fun onFailure(call: Call<kakaoResponse>, t: Throwable) {
                 //TextMsg(this@MainActivity, "retrofit 실패 \n\n")
                 println("실패")
+                Log.d("백엔드","메세지 + " +  t.message)
             }
 
             override fun onResponse(
@@ -85,13 +87,13 @@ class MainActivity : AppCompatActivity() {
                 response: Response<kakaoResponse>
             ) {
                 println("성공")
+
             }
         })
     }
     private fun kakaoLogin() {
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
-        println("출력")
 
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
@@ -106,7 +108,6 @@ class MainActivity : AppCompatActivity() {
                                 "me: ${token.idToken}"
                     )
                     setLogin(true)
-
 
                     Log.d("tag", "token: ${token.accessToken}")
                 }
@@ -131,6 +132,7 @@ class MainActivity : AppCompatActivity() {
                 } else if (token != null) {
                     TextMsg(this, "카카오톡으로 로그인 성공 ${token.accessToken}")
                     ret(token)
+                    Log.d("tag", "token: ${token.accessToken}")
                     setLogin(true)
                 }
             }
@@ -143,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         // 로그아웃
         UserApiClient.instance.logout { error ->
             if (error != null) {
-                TextMsg(this, "로그아웃 실패. SDK에서 토큰 삭제됨: ${error}")
+                TextMsg(this, "로그아웃 실패. Error : ${error}")
             }
             else {
                 TextMsg(this, "로그아웃 성공. SDK에서 토큰 삭제됨")
