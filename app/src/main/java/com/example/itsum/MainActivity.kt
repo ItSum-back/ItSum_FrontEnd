@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     private fun ret(token: OAuthToken){
 
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://172.30.1.82:8080")
+            .baseUrl("http://172.30.1.92:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -90,7 +90,8 @@ class MainActivity : AppCompatActivity() {
                 call: Call<kakaoResponse>,
                 response: Response<kakaoResponse>
             ) {
-                tempTokenSave = response.body()?.appToken
+                println("성공")
+                tempTokenSave = response.body()?.accessToken
 
             }
         })

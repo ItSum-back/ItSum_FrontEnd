@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.itsum.retrofit.postDataClass
+import com.example.itsum.retrofit.ClubPostData
 import kotlinx.android.synthetic.main.item_view.view.*
 
-class RecyclerUserAdapter(private val items: ArrayList<postDataClass>) : RecyclerView.Adapter<RecyclerUserAdapter.ViewHolder>() {
+class RecyclerUserAdapter(private val items: ArrayList<ClubPostData>) : RecyclerView.Adapter<RecyclerUserAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = items.size
 
@@ -32,7 +32,7 @@ class RecyclerUserAdapter(private val items: ArrayList<postDataClass>) : Recycle
     // 각 항목에 필요한 기능을 구현
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
-        fun bind(listener: View.OnClickListener, item: postDataClass) {
+        fun bind(listener: View.OnClickListener, item: ClubPostData) {
             view.txtTitle.text = item.title
             view.txtContent.text = item.contents
             view.setOnClickListener(listener)

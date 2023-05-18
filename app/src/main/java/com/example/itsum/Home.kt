@@ -16,16 +16,23 @@ import androidx.core.view.GravityCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.itsum.databinding.ActivityHomeBinding
-import com.example.itsum.retrofit.postDataClass
+import com.example.itsum.retrofit.APIService
+import com.example.itsum.retrofit.ClubGetData
+import com.example.itsum.retrofit.ClubPostData
+import com.example.itsum.retrofit.ClubPostResponse
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var navigationView: NavigationView
     lateinit var drawerLayout:DrawerLayout
     private lateinit var binding:ActivityHomeBinding
+    val api = APIService.create()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,10 +54,10 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         navigationView.setNavigationItemSelectedListener(this)
 
         //리사이클러뷰
-        val list = ArrayList<postDataClass>()
-        list.add(postDataClass("코딩스터디_파이썬", "1", "name 1", 1,"python","direct"))
-        list.add(postDataClass("코딩스터디_자바", "2", "name 2", 1,"java","direct"))
-        list.add(postDataClass("코딩스터디_C++", "3", "name 3", 1,"C++","direct"))
+        val list = ArrayList<ClubPostData>()
+        list.add(ClubPostData("코딩스터디_파이썬", "1", "name 1", 1,"python","direct", "member"))
+        list.add(ClubPostData("코딩스터디_자바", "2", "name 2", 1,"java","direct","member"))
+        list.add(ClubPostData("코딩스터디_C++", "3", "name 3", 1,"C++","direct","member"))
 
         val adapter = RecyclerUserAdapter(list)
         lstUser.adapter = adapter
@@ -72,7 +79,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             val okButton = mDialogView.findViewById<Button>(R.id.search_btn)
             okButton.setOnClickListener {
 
-                Toast.makeText(this, "토스트 메시지", Toast.LENGTH_SHORT).show()
             }
 
             val noButton = mDialogView.findViewById<Button>(R.id.closeButton)
@@ -80,8 +86,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 mAlertDialog.dismiss()
             }
         }
-
-
     }
     /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.templaye_toolbar_menu, menu)
@@ -109,7 +113,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 return super.onOptionsItemSelected(item)
             }
             R.id.menu_item2 -> {
-                //모집만들기 눌렀을 때
+                //마이페이지 눌렀을 때
                 val myPageIntent = Intent(this, MyPage::class.java)
                 startActivity(myPageIntent)
                 return super.onOptionsItemSelected(item)
