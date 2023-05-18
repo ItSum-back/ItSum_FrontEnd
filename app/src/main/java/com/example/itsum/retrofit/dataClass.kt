@@ -12,7 +12,12 @@ data class ClubPostData(
 )
 
 data class ClubPostResponse(
-  var id:Long?=null,
+  var success : Boolean?=null,
+  var code : Int?=null,
+  var message : String?=null,
+  var data : Int?=null,
+
+  /* var id:Long?=null,
   var title:String?=null,
   var contents:String?=null,
   var view:Int?=null,
@@ -22,7 +27,7 @@ data class ClubPostResponse(
   var meetingWay:String?=null,
   var members:String?=null,
   var createdAt:String?=null,
-  var modifiedAt:String?=null,
+  var modifiedAt:String?=null, */
 )
 
 data class ClubGetData(

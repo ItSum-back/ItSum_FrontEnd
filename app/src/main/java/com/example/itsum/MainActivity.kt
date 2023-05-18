@@ -33,11 +33,13 @@ import kotlin.math.log
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+    private var tempTokenSave: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         KakaoSdk.init(this, getString(R.string.kakao_app_key))
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //setContentView(R.layout.activity_main)
 
         //해시키 구하기
         val keyHash = Utility.getKeyHash(this)
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.loginBtn.setOnClickListener {  //로그인버튼 눌렀을 때
             val intent = Intent(this, Home::class.java)
+            intent.putExtra("accessToken", tempTokenSave)
             startActivity(intent)
         }
         binding.joinBtn.setOnClickListener {   //회원가입 눌렀을 때
@@ -69,8 +72,9 @@ class MainActivity : AppCompatActivity() {
 
     // 서버 통신 확인
     private fun ret(token: OAuthToken){
+
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://172.30.1.42:8080")
+            .baseUrl("http://172.30.1.82:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -86,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                 call: Call<kakaoResponse>,
                 response: Response<kakaoResponse>
             ) {
-                println("성공")
+                tempTokenSave = response.body()?.appToken
 
             }
         })
@@ -94,6 +98,7 @@ class MainActivity : AppCompatActivity() {
     private fun kakaoLogin() {
         // 카카오계정으로 로그인 공통 callback 구성
         // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
+        println("출력")
 
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
@@ -108,6 +113,7 @@ class MainActivity : AppCompatActivity() {
                                 "me: ${token.idToken}"
                     )
                     setLogin(true)
+
 
                     Log.d("tag", "token: ${token.accessToken}")
                 }
@@ -132,7 +138,6 @@ class MainActivity : AppCompatActivity() {
                 } else if (token != null) {
                     TextMsg(this, "카카오톡으로 로그인 성공 ${token.accessToken}")
                     ret(token)
-                    Log.d("tag", "token: ${token.accessToken}")
                     setLogin(true)
                 }
             }

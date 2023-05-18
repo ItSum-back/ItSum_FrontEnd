@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import com.example.itsum.databinding.ActivityMainBinding
 import com.example.itsum.databinding.ActivityMakeClubBinding
 import com.example.itsum.retrofit.APIService
 import com.example.itsum.retrofit.ClubPostData
@@ -18,11 +19,13 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MakeClub : AppCompatActivity() {
-  val binding by lazy { ActivityMakeClubBinding.inflate(layoutInflater) }
+  private var _binding: ActivityMakeClubBinding? = null
+  private val binding get() = _binding!!
   val api = APIService.create()
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_make_club)
+    _binding = ActivityMakeClubBinding.inflate(layoutInflater)
+    setContentView(binding.root)
 
     makeClubCloseBtn.setOnClickListener{
       finish()
@@ -60,27 +63,29 @@ class MakeClub : AppCompatActivity() {
     val recruitExplain = findViewById<EditText>(R.id.recruitExplain)
 
     // 만약 새로 만들기로 들어온다 -> 데이터 없이 페이지 렌더링
-
+    val accessToken = intent.getStringExtra("accesstoken")
+    println(accessToken)
     binding.createClubBtn.setOnClickListener{
       val title = recruitTitle.text.toString()
       val contents = recruitExplain.text.toString()
       val positionList = "백엔드, 프론트엔드"
-      val personnel = recruitMemberCount.toInt()
+      val personnel = 5
       val techSkill = "자바, 코틀린, aws"
       val meetingWays = contactMethod.text.toString()
       val members = "test?"
       val data = ClubPostData(title,contents,positionList,personnel,techSkill,meetingWays,members)
-      api.requestClubPost(data).enqueue(object : Callback<ClubPostResponse> {
+      println("this test is not fine")
+      api.requestClubPost("Bearer ${accessToken}" ,data).enqueue(object : Callback<ClubPostResponse> {
         override fun onFailure(call: Call<ClubPostResponse>, t: Throwable) {
-          Log.d("통신실패", "메세지:"+t.message)
+          println("통신실패 메세지:"+t.message)
           val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
           finish()
           startActivity(clubScreenIntent)
         }
 
         override fun onResponse(call: Call<ClubPostResponse>, response: Response<ClubPostResponse>) {
-          var res = response.body()
-          Log.d("통신성공","제목"+res?.title)
+          var res = response
+          println("통신성공 제목"+res + res.body())
           val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
           startActivity(clubScreenIntent)
         }

@@ -13,23 +13,24 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface APIService {
-   @FormUrlEncoded
-   @POST("/posts")
+
+   @POST("/post")
    fun requestClubPost(
-      @Body jsonparams: ClubPostData
+      @Header("Authorization") accessToken:String?,
+      @Body parameters : ClubPostData
    ): Call<ClubPostResponse>
 
 
    @POST("/auth/kakao")
    fun kakaoLoginAuth(
-      @Body accessToken: String
+      @Body accessToken: String,
    ): Call<kakaoResponse>
 
    @GET("/posts/{ID}")
    fun requestClubData(): Call<ClubGetData>
 
    companion object{
-      private const val BASE_URL = "https://localhost:8080"
+      private const val BASE_URL = "http://172.30.1.82:8080"
       fun create():APIService {
          val gson : Gson = GsonBuilder().setLenient().create()
 

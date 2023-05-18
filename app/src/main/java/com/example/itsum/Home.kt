@@ -98,10 +98,13 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
         when(item.itemId){
             R.id.menu_item1 -> {
                 //모집만들기 눌렀을 때
                 val makeClubIntent = Intent(this, MakeClub::class.java)
+                val accessToken = intent.getStringExtra("accessToken")
+                makeClubIntent.putExtra("accesstoken",accessToken)
                 startActivity(makeClubIntent)
                 return super.onOptionsItemSelected(item)
             }
