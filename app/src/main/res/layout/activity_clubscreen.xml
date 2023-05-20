@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteY="79dp" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/titleView"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="120dp"
@@ -36,11 +36,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/titleView"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/nicknameView"
             android:layout_width="90dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -48,7 +48,7 @@
             android:textAlignment="center" />
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/createdDateView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -75,7 +75,7 @@
             android:text="모집구분" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/recruitClassView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="모집구분 내용" />
@@ -99,7 +99,7 @@
             android:text="진행방식" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/onofflineView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="진행방식 내용" />
@@ -147,35 +147,10 @@
             android:text="현재인원" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/membersView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="현재인원 내용" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout14"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout13"
-        app:layout_constraintVertical_bias="0.0">
-
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="90dp"
-            android:layout_height="match_parent"
-            android:text="진행방식" />
-
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="진행방식 내용" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -186,7 +161,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout14"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout13"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
@@ -196,7 +171,7 @@
             android:text="시작일시" />
 
         <TextView
-            android:id="@+id/textView26"
+            android:id="@+id/startDateView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="시작일시 내용" />
@@ -220,7 +195,7 @@
             android:text="진행기간" />
 
         <TextView
-            android:id="@+id/textView28"
+            android:id="@+id/expectedPeriodView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="진행기간 내용" />
@@ -244,7 +219,7 @@
             android:text="연락방법" />
 
         <TextView
-            android:id="@+id/textView30"
+            android:id="@+id/meetingWayView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="연락방법 내용" />
@@ -264,7 +239,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView33"
+        android:id="@+id/contentView"
         android:layout_width="0dp"
         android:layout_height="240dp"
         android:text="모임소개 내용"
@@ -282,7 +257,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView33"
+        app:layout_constraintTop_toBottomOf="@+id/contentView"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView

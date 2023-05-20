@@ -31,6 +31,7 @@ data class ClubPostResponse(
 )
 
 data class ClubGetData(
+  var id:Int?=null,
   var title:String?=null,
   var contents:String?=null,
   var positionList :String?=null,

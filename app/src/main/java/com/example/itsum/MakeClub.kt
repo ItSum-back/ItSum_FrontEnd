@@ -3,20 +3,17 @@ package com.example.itsum
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
-import com.example.itsum.databinding.ActivityMainBinding
 import com.example.itsum.databinding.ActivityMakeClubBinding
 import com.example.itsum.retrofit.APIService
 import com.example.itsum.retrofit.ClubPostData
 import com.example.itsum.retrofit.ClubPostResponse
 import kotlinx.android.synthetic.main.activity_make_club.*
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MakeClub : AppCompatActivity() {
   private var _binding: ActivityMakeClubBinding? = null
@@ -58,12 +55,12 @@ class MakeClub : AppCompatActivity() {
     val recruitedMember = binding.recruitedMember.text.toString()
     val startDate = findViewById<EditText>(R.id.startDate)
     val expectedPeriod = findViewById<EditText>(R.id.expectedPeriod)
-    val contactMethod = findViewById<EditText>(R.id.contactMethod)
+    val meetingWays = binding.contactMethod.text.toString()
     val recruitTitle = findViewById<EditText>(R.id.recruitTitle)
     val recruitExplain = findViewById<EditText>(R.id.recruitExplain)
 
     // 만약 새로 만들기로 들어온다 -> 데이터 없이 페이지 렌더링
-    val accessToken = intent.getStringExtra("accesstoken")
+    val accessToken = intent.getStringExtra("accessToken")
     println(accessToken)
     binding.createClubBtn.setOnClickListener{
       val title = recruitTitle.text.toString()
@@ -71,22 +68,27 @@ class MakeClub : AppCompatActivity() {
       val positionList = "백엔드, 프론트엔드"
       val personnel = 5
       val techSkill = "자바, 코틀린, aws"
-      val meetingWays = contactMethod.text.toString()
+      val meetingWays = meetingWays
       val members = "test?"
       val data = ClubPostData(title,contents,positionList,personnel,techSkill,meetingWays,members)
       println("this test is not fine")
       api.requestClubPost("Bearer ${accessToken}" ,data).enqueue(object : Callback<ClubPostResponse> {
         override fun onFailure(call: Call<ClubPostResponse>, t: Throwable) {
-          println("통신실패 메세지:"+t.message)
-          val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
+          // println("통신실패 메세지:"+t.message) 실패시 홈 화면으로 패스
+          val goHomeIntent = Intent(this@MakeClub, Home::class.java)
           finish()
-          startActivity(clubScreenIntent)
+          startActivity(goHomeIntent)
         }
 
         override fun onResponse(call: Call<ClubPostResponse>, response: Response<ClubPostResponse>) {
           var res = response
           println("통신성공 제목"+res + res.body())
+          // 리스폰스로 바디 데이터에서 모임 아이디 값 수령, 수령한 아이디 값을 인텐트를 통해 스크린으로 전달
           val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
+          val accessToken = intent.getStringExtra("accessToken")
+          clubScreenIntent.putExtra("accessToken",accessToken)
+          // clubScreenIntent.putExtra("id", res.body().id)
+          finish()
           startActivity(clubScreenIntent)
         }
 

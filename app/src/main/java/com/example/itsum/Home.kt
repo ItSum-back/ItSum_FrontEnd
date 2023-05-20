@@ -3,13 +3,9 @@ package com.example.itsum
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View.inflate
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 //import android.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -17,15 +13,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.itsum.databinding.ActivityHomeBinding
 import com.example.itsum.retrofit.APIService
-import com.example.itsum.retrofit.ClubGetData
 import com.example.itsum.retrofit.ClubPostData
-import com.example.itsum.retrofit.ClubPostResponse
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -108,7 +99,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 //모집만들기 눌렀을 때
                 val makeClubIntent = Intent(this, MakeClub::class.java)
                 val accessToken = intent.getStringExtra("accessToken")
-                makeClubIntent.putExtra("accesstoken",accessToken)
+                makeClubIntent.putExtra("accessToken",accessToken)
                 startActivity(makeClubIntent)
                 return super.onOptionsItemSelected(item)
             }

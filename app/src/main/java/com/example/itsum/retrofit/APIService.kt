@@ -11,6 +11,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface APIService {
 
@@ -26,8 +27,11 @@ interface APIService {
       @Body accessToken: String,
    ): Call<kakaoResponse>
 
-   @GET("/posts/{ID}")
-   fun requestClubData(): Call<ClubGetData>
+   @GET("/post/{ID}")
+   fun requestClubData(
+      @Header("Authorization") accessToken:String?,
+      @Path("ID") id:Int
+   ): Call<ClubGetData>
 
    companion object{
       private const val BASE_URL = "http://172.30.1.82:8080"
