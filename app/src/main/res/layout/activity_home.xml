@@ -20,6 +20,7 @@
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="650dp"
         android:background="@color/purple_200"
+        android:minHeight="48dp"
         android:text="button"
         android:textColor="#311B92" />
 

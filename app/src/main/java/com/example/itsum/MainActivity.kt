@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private var tempTokenSave: String? = ""
+    val api = APIService.create()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         KakaoSdk.init(this, getString(R.string.kakao_app_key))
@@ -73,13 +74,7 @@ class MainActivity : AppCompatActivity() {
     // 서버 통신 확인
     private fun ret(token: OAuthToken){
 
-        var retrofit = Retrofit.Builder()
-            .baseUrl("http://172.30.1.92:8080")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        var kakaoRetro: APIService = retrofit.create(APIService::class.java)
-        kakaoRetro.kakaoLoginAuth(token.accessToken).enqueue(object : Callback<kakaoResponse>{
+        api.kakaoLoginAuth(token.accessToken).enqueue(object : Callback<kakaoResponse>{
             override fun onFailure(call: Call<kakaoResponse>, t: Throwable) {
                 //TextMsg(this@MainActivity, "retrofit 실패 \n\n")
                 println("실패")
@@ -90,6 +85,8 @@ class MainActivity : AppCompatActivity() {
                 call: Call<kakaoResponse>,
                 response: Response<kakaoResponse>
             ) {
+                println("response = " + response.body())
+                println("oauth response = " + token.accessToken)
                 println("성공")
                 tempTokenSave = response.body()?.accessToken
 

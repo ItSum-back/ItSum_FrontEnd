@@ -3,6 +3,7 @@ package com.example.itsum
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
@@ -16,10 +17,7 @@ import androidx.core.view.GravityCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.itsum.databinding.ActivityHomeBinding
-import com.example.itsum.retrofit.APIService
-import com.example.itsum.retrofit.ClubGetData
-import com.example.itsum.retrofit.ClubPostData
-import com.example.itsum.retrofit.ClubPostResponse
+import com.example.itsum.retrofit.*
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
@@ -32,7 +30,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     lateinit var navigationView: NavigationView
     lateinit var drawerLayout:DrawerLayout
     private lateinit var binding:ActivityHomeBinding
-    val api = APIService.create()
+    private val api = APIService.create()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,6 +57,16 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         list.add(ClubPostData("코딩스터디_자바", "2", "name 2", 1,"java","direct","member"))
         list.add(ClubPostData("코딩스터디_C++", "3", "name 3", 1,"C++","direct","member"))
 
+        api.searchUsingGet().enqueue(object :Callback<ClubSearchResponse>{
+            override fun onResponse(call: Call<ClubSearchResponse>, response: Response<ClubSearchResponse>) {
+                Log.d("성공",response.toString())
+                println("성공"+response.body())
+            }
+
+            override fun onFailure(call: Call<ClubSearchResponse>, t: Throwable) {
+                Log.d("실패",t.message.toString())
+            }
+        })
         val adapter = RecyclerUserAdapter(list)
         lstUser.adapter = adapter
 
