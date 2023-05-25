@@ -18,6 +18,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.itsum.databinding.ActivityHomeBinding
 import com.example.itsum.retrofit.*
+import com.example.itsum.retrofit.APIService
+import com.example.itsum.retrofit.ClubPostData
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
@@ -116,7 +118,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 //모집만들기 눌렀을 때
                 val makeClubIntent = Intent(this, MakeClub::class.java)
                 val accessToken = intent.getStringExtra("accessToken")
-                makeClubIntent.putExtra("accesstoken",accessToken)
+                makeClubIntent.putExtra("accessToken",accessToken)
                 startActivity(makeClubIntent)
                 return super.onOptionsItemSelected(item)
             }

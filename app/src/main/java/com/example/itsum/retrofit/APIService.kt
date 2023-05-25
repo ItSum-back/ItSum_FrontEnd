@@ -15,6 +15,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.Path
 
 interface APIService {
 
@@ -30,6 +31,11 @@ interface APIService {
       @Body accessToken: String,
    ): Call<kakaoResponse>
 
+   @GET("/post/{ID}")
+   fun requestClubData(
+      @Header("Authorization") accessToken:String?,
+      @Path("ID") id:Int
+   ): Call<ClubGetData>
    @GET("/post/{ID}")
    fun requestClubData(): Call<ClubGetData>
 
@@ -52,7 +58,6 @@ interface APIService {
 
          return Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create(gson)).build().create(APIService::class.java)
       }
-
    }
 }
 
