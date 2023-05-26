@@ -51,7 +51,7 @@ interface APIService {
       @Query("title") title:String?=null
    ):Call<ClubSearchResponse>
    companion object{
-      private const val BASE_URL = "http://172.30.1.88:8080"
+      private const val BASE_URL = "http://192.168.35.64:8080"
 
       fun create():APIService {
          val gson : Gson = GsonBuilder().setLenient().create()

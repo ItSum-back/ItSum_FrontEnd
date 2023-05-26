@@ -6,17 +6,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.itsum.retrofit.ClubPostData
+import com.example.itsum.retrofit.PostsListResponseDto
 import kotlinx.android.synthetic.main.item_view.view.*
 
-class RecyclerUserAdapter(private val items: ArrayList<ClubPostData>) : RecyclerView.Adapter<RecyclerUserAdapter.ViewHolder>() {
+class RecyclerUserAdapter(private val items: List<PostsListResponseDto>?) : RecyclerView.Adapter<RecyclerUserAdapter.ViewHolder>() {
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = items!!.size
 
     override fun onBindViewHolder(holder: RecyclerUserAdapter.ViewHolder, position: Int) {
 
-        val item = items[position]
+        val item = items?.get(position)
         val listener = View.OnClickListener { it ->
-            Toast.makeText(it.context, "Clicked -> ID : ${item.title}, Name : ${item.contents}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(it.context, "Clicked -> ID : ${item?.title}, Name : ${item?.contents}", Toast.LENGTH_SHORT).show()
         }
         holder.apply {
             bind(listener, item)
@@ -32,9 +33,9 @@ class RecyclerUserAdapter(private val items: ArrayList<ClubPostData>) : Recycler
     // 각 항목에 필요한 기능을 구현
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
-        fun bind(listener: View.OnClickListener, item: ClubPostData) {
-            view.txtTitle.text = item.title
-            view.txtContent.text = item.contents
+        fun bind(listener: View.OnClickListener, item: PostsListResponseDto?) {
+            view.txtTitle.text = item?.title
+            view.txtContent.text = item?.contents
             view.setOnClickListener(listener)
         }
     }

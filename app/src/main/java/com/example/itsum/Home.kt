@@ -54,23 +54,20 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         navigationView.setNavigationItemSelectedListener(this)
 
         //리사이클러뷰
-        val list = ArrayList<ClubPostData>()
-        list.add(ClubPostData("코딩스터디_파이썬", "1", "name 1", 1,"python","direct", "member"))
-        list.add(ClubPostData("코딩스터디_자바", "2", "name 2", 1,"java","direct","member"))
-        list.add(ClubPostData("코딩스터디_C++", "3", "name 3", 1,"C++","direct","member"))
-
         api.searchUsingGet().enqueue(object :Callback<ClubSearchResponse>{
             override fun onResponse(call: Call<ClubSearchResponse>, response: Response<ClubSearchResponse>) {
                 Log.d("성공",response.toString())
                 println("성공"+response.body())
+                println("성공"+response.body()?.data)
+                println("성공"+response.body()?.data?.content)
+                val adapter = RecyclerUserAdapter(response.body()?.data?.content)
+                lstUser.adapter = adapter
             }
 
             override fun onFailure(call: Call<ClubSearchResponse>, t: Throwable) {
                 Log.d("실패",t.message.toString())
             }
         })
-        val adapter = RecyclerUserAdapter(list)
-        lstUser.adapter = adapter
 
         //다이얼로그
         val button = findViewById<Button>(R.id.button)
@@ -88,7 +85,6 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
             val okButton = mDialogView.findViewById<Button>(R.id.search_btn)
             okButton.setOnClickListener {
-
             }
 
             val noButton = mDialogView.findViewById<Button>(R.id.closeButton)
