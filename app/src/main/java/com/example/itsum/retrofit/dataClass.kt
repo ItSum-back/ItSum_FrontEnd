@@ -96,3 +96,8 @@ data class Sort(
   var sorted:Boolean?=null,
   var unsorted:Boolean?=null
 )
+
+data class googleResponse(
+  var appToken:String,
+  var isNewMember:Boolean
+)

@@ -10,3 +10,4 @@ data class kakaoResponse(
   var accessToken:String,
   var isNewMember:Boolean
 )
+

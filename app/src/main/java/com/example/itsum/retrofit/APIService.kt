@@ -25,11 +25,15 @@ interface APIService {
       @Body parameters : ClubPostData
    ): Call<ClubPostResponse>
 
-
    @POST("/auth/kakao")
    fun kakaoLoginAuth(
       @Body accessToken: String,
    ): Call<kakaoResponse>
+
+   @POST("auth/google")
+   fun googleLoginAuth(
+      @Body accessToken: String
+   ): Call<googleResponse>
 
    @GET("/post/{ID}")
    fun requestClubData(
@@ -51,7 +55,7 @@ interface APIService {
       @Query("title") title:String?=null
    ):Call<ClubSearchResponse>
    companion object{
-      private const val BASE_URL = "http://192.168.35.64:8080"
+      private const val BASE_URL = "http://172.30.1.21:8080"
 
       fun create():APIService {
          val gson : Gson = GsonBuilder().setLenient().create()
