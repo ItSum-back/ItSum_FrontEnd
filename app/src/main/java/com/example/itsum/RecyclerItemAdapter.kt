@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.Nullable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.itsum.retrofit.ClubPostData
 import com.example.itsum.retrofit.PostsListResponseDto
@@ -39,4 +40,5 @@ class RecyclerUserAdapter(private val items: List<PostsListResponseDto>?) : Recy
             view.setOnClickListener(listener)
         }
     }
+
 }

@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View.inflate
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 //import android.widget.Toolbar
@@ -23,6 +24,7 @@ import com.example.itsum.retrofit.ClubPostData
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.appbar.*
+import kotlinx.android.synthetic.main.dialog.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,14 +58,11 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         //리사이클러뷰
         api.searchUsingGet().enqueue(object :Callback<ClubSearchResponse>{
             override fun onResponse(call: Call<ClubSearchResponse>, response: Response<ClubSearchResponse>) {
-                Log.d("성공",response.toString())
-                println("성공"+response.body())
-                println("성공"+response.body()?.data)
-                println("성공"+response.body()?.data?.content)
-                val adapter = RecyclerUserAdapter(response.body()?.data?.content)
-                lstUser.adapter = adapter
+                if (response.body()?.data != null){
+                    val adapter = RecyclerUserAdapter(response.body()?.data?.content)
+                    lstUser.adapter = adapter
+                }
             }
-
             override fun onFailure(call: Call<ClubSearchResponse>, t: Throwable) {
                 Log.d("실패",t.message.toString())
             }
@@ -85,6 +84,22 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
             val okButton = mDialogView.findViewById<Button>(R.id.search_btn)
             okButton.setOnClickListener {
+                val title = mDialogView.findViewById<EditText>(R.id.title_detail).text.toString()
+                val tech = mDialogView.findViewById<EditText>(R.id.tech_skill).text.toString()
+                api.searchUsingGet(title = title, techskill = tech).enqueue(object :Callback<ClubSearchResponse>{
+                    override fun onResponse(call: Call<ClubSearchResponse>, response: Response<ClubSearchResponse>) {
+                        if (response.body()?.data != null){
+                            println("성공"+response.body()?.data?.content)
+                            val adapter = RecyclerUserAdapter(response.body()?.data?.content)
+                            adapter.notifyDataSetChanged()
+                            lstUser.adapter = adapter
+                            mAlertDialog.dismiss()
+                        }
+                    }
+                    override fun onFailure(call: Call<ClubSearchResponse>, t: Throwable) {
+                        Log.d("실패",t.message.toString())
+                    }
+                })
             }
 
             val noButton = mDialogView.findViewById<Button>(R.id.closeButton)
@@ -130,4 +145,9 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
         return false
     }
+    /*
+    private fun updateList(list: List<String>) {
+        adapter.dataList = list
+        adapter.notifyDataSetChanged() // 리스트 변경을 adapter에 알림
+    }*/
 }

@@ -2,6 +2,6 @@
     <string name="app_name">itsum</string>
     <string name="kakao_app_key">85163f5fdcc7f3e677af0f37590cac11</string>
     <string name="google_client_id">135985880546-0p76g773d2ctglkjtlr6gb8034uk9mln.apps.googleusercontent.com</string>
-    <string name="ip_address">http://172.30.1.21:8080</string>
+    <string name="ip_address">http://172.30.1.48:8080</string>
 
 </resources>
