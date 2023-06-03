@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         binding.loginBtn.setOnClickListener {  //로그인버튼 눌렀을 때
             val intent = Intent(this, Home::class.java)
             intent.putExtra("accessToken", tempTokenSave)
+            finish()
             startActivity(intent)
         }
         binding.joinBtn.setOnClickListener {   //회원가입 눌렀을 때
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                 println("response = " + response.body())
                 println("oauth response = " + token.accessToken)
                 println("성공")
-                tempTokenSave = response.body()?.accessToken
+                tempTokenSave = response.body()?.appToken
 
             }
         })

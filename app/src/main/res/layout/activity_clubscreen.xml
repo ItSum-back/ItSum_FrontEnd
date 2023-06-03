@@ -75,7 +75,7 @@
             android:text="모집구분" />
 
         <TextView
-            android:id="@+id/recruitClassView"
+            android:id="@+id/categoryView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="모집구분 내용" />
@@ -123,7 +123,7 @@
             android:text="모집인원" />
 
         <TextView
-            android:id="@+id/recruitMemberCount"
+            android:id="@+id/personnelView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="모집인원 내용" />
@@ -219,7 +219,7 @@
             android:text="연락방법" />
 
         <TextView
-            android:id="@+id/meetingWayView"
+            android:id="@+id/ContactView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="연락방법 내용" />
@@ -239,7 +239,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/contentView"
+        android:id="@+id/contentsView"
         android:layout_width="0dp"
         android:layout_height="240dp"
         android:text="모임소개 내용"
@@ -257,7 +257,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contentView"
+        app:layout_constraintTop_toBottomOf="@+id/contentsView"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView

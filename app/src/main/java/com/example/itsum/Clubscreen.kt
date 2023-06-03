@@ -12,32 +12,45 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Clubscreen : AppCompatActivity() {
-  val binding by lazy {ActivityClubscreenBinding.inflate(layoutInflater)}
+  private var _binding: ActivityClubscreenBinding? = null
+  private val binding get() = _binding!!
   val api = APIService.create()
-  val id = intent.getIntExtra("id", 0)
-  val accessToken = intent.getStringExtra("accessToken")
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    _binding = ActivityClubscreenBinding.inflate(layoutInflater)
     setContentView(binding.root)
+    val id = intent.getIntExtra("id", 0)
+    val accessToken = intent.getStringExtra("accessToken")
 
     clubScreenCloseBtn.setOnClickListener{
       finish()
     }
 
+    val ContactView = binding.ContactView
+    val ContentsView = binding.contentsView
+    val TitleView = binding.titleView
+    val personnelView = binding.personnelView
+    val categoryView = binding.categoryView
 
-
-    api.requestClubData(accessToken, id).enqueue(object :Callback<ClubGetData>{
+    // api 호출이 안됨. 바로 위까지는 작업이 완료 잘 됨. 로그 확인 가능
+    api.requestClubData("Bearer "+accessToken, id).enqueue(object :Callback<ClubGetData>{
       override fun onFailure(call: Call<ClubGetData>, t: Throwable) {
-        println("log"+t.message)
+        println("테스트2"+api.requestClubData(accessToken, id).request())
+        println("화면실패"+t.message)
         val goHomeIntent = Intent(this@Clubscreen, Home::class.java)
         finish()
         startActivity(goHomeIntent)
       }
       override fun onResponse(call: Call<ClubGetData>, response: Response<ClubGetData>) {
-        val res = response.body()
+        val res = response.body()?.data
         if(res != null) {
-          println("log"+res)
-          binding.titleView.text = res.title
+          println("화면성공 "+res)
+          TitleView.setText(res.title)
+          ContactView.setText(res.contact)
+          ContentsView.setText(res.contents)
+          personnelView.setText(res.personnel.toString())
+          categoryView.setText(res.category)
         }
         else {
           // 존재하지 않는 페이지???

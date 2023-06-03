@@ -51,26 +51,27 @@ class MakeClub : AppCompatActivity() {
       }
     }
 
-    val recruitMemberCount = binding.recruitMemberCount.text.toString()
+    val title = binding.title
+    val contents = binding.contents
+    // val personnel = binding.personnel.text.toString().trim()
+    val meetingWays = binding.meetingWays
+    val category = binding.recruitClassSpinner
     val recruitedMember = binding.recruitedMember.text.toString()
     val startDate = findViewById<EditText>(R.id.startDate)
     val expectedPeriod = findViewById<EditText>(R.id.expectedPeriod)
-    val meetingWays = binding.contactMethod.text.toString()
-    val recruitTitle = findViewById<EditText>(R.id.recruitTitle)
-    val recruitExplain = findViewById<EditText>(R.id.recruitExplain)
 
     // 만약 새로 만들기로 들어온다 -> 데이터 없이 페이지 렌더링
     val accessToken = intent.getStringExtra("accessToken")
-    println(accessToken)
     binding.createClubBtn.setOnClickListener{
-      val title = recruitTitle.text.toString()
-      val contents = recruitExplain.text.toString()
-      val positionList = "백엔드, 프론트엔드"
-      val personnel = 5
+      val title = title.text.toString()
+      val contents = contents.text.toString()
+      val positionList = "백엔드, 프론트엔드, 아직 못정함"
+      val personnel : Int = binding.personnel.text.toString().trim().toInt()
       val techSkill = "자바, 코틀린, aws"
-      val meetingWays = meetingWays
-      val members = "test?"
-      val data = ClubPostData(title,contents,positionList,personnel,techSkill,meetingWays,members)
+      val meetingWays = meetingWays.text.toString()
+      val members = "의미 불명???"
+      val category = category.selectedItem.toString()
+      val data = ClubPostData(title,contents,positionList,personnel,techSkill,meetingWays,members,category)
       println("this test is not fine")
       api.requestClubPost("Bearer ${accessToken}" ,data).enqueue(object : Callback<ClubPostResponse> {
         override fun onFailure(call: Call<ClubPostResponse>, t: Throwable) {
@@ -87,7 +88,7 @@ class MakeClub : AppCompatActivity() {
           val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
           val accessToken = intent.getStringExtra("accessToken")
           clubScreenIntent.putExtra("accessToken",accessToken)
-          // clubScreenIntent.putExtra("id", res.body().id)
+          clubScreenIntent.putExtra("id", response.body()?.data)
           finish()
           startActivity(clubScreenIntent)
         }

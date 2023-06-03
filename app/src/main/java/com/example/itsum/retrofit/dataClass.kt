@@ -11,6 +11,7 @@ data class ClubPostData(
   var techSkill:String?=null,
   var meetingWays :String?=null,
   var members :String?=null,
+  var category : String?=null,
 )
 
 data class ClubPostResponse(
@@ -33,14 +34,29 @@ data class ClubPostResponse(
 )
 
 data class ClubGetData(
-  var id:Int?=null,
-  var title:String?=null,
-  var contents:String?=null,
-  var positionList :String?=null,
-  var personnel:Int?=null,
-  var techSkill:String?=null,
-  var meetingWays :String?=null,
-  var createdAt : String?=null,
+  var success: Boolean?=null,
+  var code: Int?=null,
+  var message: String?=null,
+  var data: ClubGetDataDto?=null,
+)
+
+data class ClubGetDataDto(
+  var category: String?=null,
+  var contact: String?=null,
+  var contents: String?=null,
+  var createdAt: String?=null,
+  var deadline: String?=null,
+  var id: Int?=null,
+  var meetingWay: String?=null,
+  var members: String?=null,
+  var modifiedAt: String?=null,
+  var personnel: Int?=null,
+  var positionList: String?=null,
+  var projectEndTime: String?=null,
+  var projectStartTime: String?=null,
+  var techSkill: String?=null,
+  var title: String?=null,
+  var view:Int?=null,
 )
 
 data class ClubSearchResponse(

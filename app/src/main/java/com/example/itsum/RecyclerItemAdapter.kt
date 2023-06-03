@@ -18,6 +18,7 @@ class RecyclerUserAdapter(private val items: List<PostsListResponseDto>?) : Recy
         val item = items?.get(position)
         val listener = View.OnClickListener { it ->
             Toast.makeText(it.context, "Clicked -> ID : ${item?.title}, Name : ${item?.contents}", Toast.LENGTH_SHORT).show()
+
         }
         holder.apply {
             bind(listener, item)
