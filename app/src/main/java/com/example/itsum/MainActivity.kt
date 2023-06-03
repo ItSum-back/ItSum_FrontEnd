@@ -24,7 +24,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.ktx.Firebase
 //import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
@@ -46,6 +48,8 @@ class MainActivity : AppCompatActivity() {
     private var tempTokenSave: String? = ""
     val api = APIService.create()
     private lateinit var auth: FirebaseAuth
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var startGoogleLoginForResult : ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         KakaoSdk.init(this, getString(R.string.kakao_app_key))
@@ -56,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         //해시키 구하기
         val keyHash = Utility.getKeyHash(this)
         Log.d("Hash", keyHash)
-
 
         binding.loginBtn.setOnClickListener {  //로그인버튼 눌렀을 때
             val intent = Intent(this, Home::class.java)
@@ -181,8 +184,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun googleInit() {
-        lateinit var mGoogleSignInClient: GoogleSignInClient
-        lateinit var startGoogleLoginForResult : ActivityResultLauncher<Intent>
 
         val default_web_client_id = {R.string.google_client_id}; // Android id X
 
