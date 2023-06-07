@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "806325924855",
+    "project_id": "itsum-383010",
+    "storage_bucket": "itsum-383010.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:806325924855:android:ebd0a5f627de5fe999f4f2",
+        "android_client_info": {
+          "package_name": "com.example.itsum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "806325924855-3c16hutoeth520vdu8a89k89uo4qv3jf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuauYp3OEwF6uuwJlrIIVueO0pOzPN5N8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "806325924855-3c16hutoeth520vdu8a89k89uo4qv3jf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

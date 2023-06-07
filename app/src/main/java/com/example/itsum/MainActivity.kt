@@ -3,27 +3,28 @@ package com.example.itsum
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
-import com.kakao.sdk.common.util.Utility
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.example.itsum.databinding.ActivityMainBinding
 import com.example.itsum.retrofit.APIService
 import com.example.itsum.retrofit.ATM
 import com.example.itsum.retrofit.RetrofitConnection
 import com.example.itsum.retrofit.kakaoResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -33,15 +34,14 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.*
 import com.kakao.sdk.common.model.AuthErrorCause.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.math.log
+
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -52,6 +52,26 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var startGoogleLoginForResult : ActivityResultLauncher<Intent>
+    private val googleSignInClient: GoogleSignInClient by lazy { getGoogleClient() }
+    private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
+        try {
+            val account = task.getResult(ApiException::class.java)
+            // 이름, 이메일 등이 필요하다면 아래와 같이 account를 통해 각 메소드를 불러올 수 있다.
+            val userName = account.givenName
+            val serverAuth = account.serverAuthCode
+            println("로그인 성공")
+            println("이름 : " + userName)
+            println("serverAuth : " + serverAuth)
+
+        } catch (e: ApiException) {
+            println("로그인 실패"+e)
+        }
+
+
+    }
+    private val RC_SIGN_IN = 116
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         KakaoSdk.init(this, getString(R.string.kakao_app_key))
@@ -71,9 +91,12 @@ class MainActivity : AppCompatActivity() {
         }
         binding.joinBtn.setOnClickListener {   //회원가입 눌렀을 때
             kakaoLogout()
+            googleLogout()
         }
         binding.googleLogin.setOnClickListener{
-            googleInit()
+            googleSignInClient.signOut()
+            val signInIntent = googleSignInClient.signInIntent
+            googleAuthLauncher.launch(signInIntent)
         }
         binding.kakaoLogin.setOnClickListener {
             kakaoLogin()
@@ -172,8 +195,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun googleLogin(){
+    private fun getGoogleClient(): GoogleSignInClient {
+        val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestServerAuthCode(getString(R.string.google_client_id)) // string 파일에 저장해둔 client id 를 이용해 server authcode를 요청한다.
+            .requestEmail() // 이메일도 요청할 수 있다.
+            .build()
 
+        return GoogleSignIn.getClient(this, googleSignInOption)
+    }
+    private fun googleLogout(){
+        googleSignInClient?.signOut()
     }
     private fun TextMsg(act: Activity, msg : String){
         binding.textView2.text = msg
@@ -183,59 +214,6 @@ class MainActivity : AppCompatActivity() {
         //binding.textView2.visibility = if(bool) View.GONE else View.VISIBLE
         //binding.btnStartKakaoLogout.visibility = if(bool) View.VISIBLE else View.GONE
         //binding.btnStartKakaoUnlink.visibility = if(bool) View.VISIBLE else View.GONE
-    }
-
-    private fun googleInit() {
-
-        val default_web_client_id = {R.string.google_client_id}; // Android id X
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(default_web_client_id.toString())
-            .requestEmail()
-            .build()
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        startGoogleLoginForResult =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-                if (result.resultCode == RESULT_OK) {
-                    result.data?.let { data ->
-
-                        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-
-                        try {
-                            // Google Sign In was successful, authenticate with Firebase
-                            val account = task.getResult(ApiException::class.java)!!
-                            Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                            firebaseAuthWithGoogle(account.idToken!!)
-                        } catch (e: ApiException) {
-                            // Google Sign In failed, update UI appropriately
-                            Log.w(TAG, "Google sign in failed", e)
-                        }
-                    }
-                    // Google Login Success
-                } else {
-                    Log.e(TAG, "Google Result Error ${result}")
-                }
-            }
-    }
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    TextMsg(this, "구글 로그인 성공 : ${task}")
-                    val user = auth.currentUser
-                    //updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    TextMsg(this, "구글 로그인 실패 : ${task.exception}")
-                    //updateUI(null)
-                }
-            }
     }
 
 }
