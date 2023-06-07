@@ -1,5 +1,6 @@
 package com.example.itsum
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,9 @@ class RecyclerUserAdapter(private val items: List<PostsListResponseDto>?) : Recy
 
         val item = items?.get(position)
         val listener = View.OnClickListener { it ->
-            Toast.makeText(it.context, "Clicked -> ID : ${item?.title}, Name : ${item?.contents}", Toast.LENGTH_SHORT).show()
+            val clubScreenIntent = Intent(it.context, Clubscreen::class.java)
+            clubScreenIntent.putExtra("id", item?.id)
+            clubScreenIntent.run { it.context.startActivity(this) }
 
         }
         holder.apply {

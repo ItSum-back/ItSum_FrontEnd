@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.itsum.databinding.ActivityMainBinding
 import com.example.itsum.retrofit.APIService
+import com.example.itsum.retrofit.ATM
 import com.example.itsum.retrofit.RetrofitConnection
 import com.example.itsum.retrofit.kakaoResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -45,8 +46,9 @@ import kotlin.math.log
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private var tempTokenSave: String? = ""
+    private var tempTokenSave: String = ""
     val api = APIService.create()
+    val atm = ATM
     private lateinit var auth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var startGoogleLoginForResult : ActivityResultLauncher<Intent>
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.loginBtn.setOnClickListener {  //로그인버튼 눌렀을 때
             val intent = Intent(this, Home::class.java)
-            intent.putExtra("accessToken", tempTokenSave)
+            atm.setToken(tempTokenSave)
             finish()
             startActivity(intent)
         }
@@ -101,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 println("response = " + response.body())
                 println("oauth response = " + token.accessToken)
                 println("성공")
-                tempTokenSave = response.body()?.appToken
+                tempTokenSave = response.body()!!.appToken
 
             }
         })

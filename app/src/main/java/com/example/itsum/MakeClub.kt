@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import com.example.itsum.databinding.ActivityMakeClubBinding
 import com.example.itsum.retrofit.APIService
+import com.example.itsum.retrofit.ATM
 import com.example.itsum.retrofit.ClubPostData
 import com.example.itsum.retrofit.ClubPostResponse
 import kotlinx.android.synthetic.main.activity_make_club.*
@@ -19,6 +20,7 @@ class MakeClub : AppCompatActivity() {
   private var _binding: ActivityMakeClubBinding? = null
   private val binding get() = _binding!!
   val api = APIService.create()
+  val at = ATM
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     _binding = ActivityMakeClubBinding.inflate(layoutInflater)
@@ -61,7 +63,7 @@ class MakeClub : AppCompatActivity() {
     val expectedPeriod = findViewById<EditText>(R.id.expectedPeriod)
 
     // 만약 새로 만들기로 들어온다 -> 데이터 없이 페이지 렌더링
-    val accessToken = intent.getStringExtra("accessToken")
+    val accessToken = at.getToken()
     binding.createClubBtn.setOnClickListener{
       val title = title.text.toString()
       val contents = contents.text.toString()
@@ -72,22 +74,15 @@ class MakeClub : AppCompatActivity() {
       val members = "의미 불명???"
       val category = category.selectedItem.toString()
       val data = ClubPostData(title,contents,positionList,personnel,techSkill,meetingWays,members,category)
-      println("this test is not fine")
       api.requestClubPost("Bearer ${accessToken}" ,data).enqueue(object : Callback<ClubPostResponse> {
         override fun onFailure(call: Call<ClubPostResponse>, t: Throwable) {
-          // println("통신실패 메세지:"+t.message) 실패시 홈 화면으로 패스
           val goHomeIntent = Intent(this@MakeClub, Home::class.java)
           finish()
           startActivity(goHomeIntent)
         }
 
         override fun onResponse(call: Call<ClubPostResponse>, response: Response<ClubPostResponse>) {
-          var res = response
-          println("통신성공 제목"+res + res.body())
-          // 리스폰스로 바디 데이터에서 모임 아이디 값 수령, 수령한 아이디 값을 인텐트를 통해 스크린으로 전달
           val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
-          val accessToken = intent.getStringExtra("accessToken")
-          clubScreenIntent.putExtra("accessToken",accessToken)
           clubScreenIntent.putExtra("id", response.body()?.data)
           finish()
           startActivity(clubScreenIntent)

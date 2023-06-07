@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.itsum.databinding.ActivityClubscreenBinding
 import com.example.itsum.retrofit.APIService
+import com.example.itsum.retrofit.ATM
 import com.example.itsum.retrofit.ClubGetData
 import kotlinx.android.synthetic.main.activity_clubscreen.*
 import retrofit2.Call
@@ -15,13 +16,14 @@ class Clubscreen : AppCompatActivity() {
   private var _binding: ActivityClubscreenBinding? = null
   private val binding get() = _binding!!
   val api = APIService.create()
+  var atm = ATM
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     _binding = ActivityClubscreenBinding.inflate(layoutInflater)
     setContentView(binding.root)
     val id = intent.getIntExtra("id", 0)
-    val accessToken = intent.getStringExtra("accessToken")
+    val at = atm.getToken()
 
     clubScreenCloseBtn.setOnClickListener{
       finish()
@@ -34,9 +36,9 @@ class Clubscreen : AppCompatActivity() {
     val categoryView = binding.categoryView
 
     // api 호출이 안됨. 바로 위까지는 작업이 완료 잘 됨. 로그 확인 가능
-    api.requestClubData("Bearer "+accessToken, id).enqueue(object :Callback<ClubGetData>{
+    api.requestClubData("Bearer "+at, id).enqueue(object :Callback<ClubGetData>{
       override fun onFailure(call: Call<ClubGetData>, t: Throwable) {
-        println("테스트2"+api.requestClubData(accessToken, id).request())
+        println("테스트2"+api.requestClubData(at, id).request())
         println("화면실패"+t.message)
         val goHomeIntent = Intent(this@Clubscreen, Home::class.java)
         finish()
