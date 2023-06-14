@@ -22,7 +22,7 @@
         android:layout_height="120dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="모임 내용 상세"
+        android:hint="내용을 적어주세요!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -166,7 +166,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
-            android:inputType="date" />
+            android:inputType="text"
+            android:hint="00년 00월 00일"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -194,7 +196,7 @@
             android:layout_height="match_parent"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="약 2주" />
+            android:hint="약 2주" />
     </LinearLayout>
 
     <LinearLayout
@@ -222,7 +224,7 @@
             android:layout_height="match_parent"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="카톡링크 및 기타" />
+            android:hint="카톡링크 및 기타" />
     </LinearLayout>
 
     <LinearLayout
@@ -250,7 +252,7 @@
             android:layout_height="match_parent"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="제목" />
+            android:hint="제목" />
     </LinearLayout>
 
     <LinearLayout

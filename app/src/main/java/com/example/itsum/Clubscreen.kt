@@ -27,11 +27,16 @@ class Clubscreen : AppCompatActivity() {
       finish()
     }
 
-    val ContactView = binding.ContactView
-    val ContentsView = binding.contentsView
-    val TitleView = binding.titleView
-    val personnelView = binding.personnelView
     val categoryView = binding.categoryView
+    val ContactView = binding.onofflineView
+    val ContentsView = binding.contentsView
+    val CreatedDateView = binding.createdDateView
+    val MeetingWayView = binding.ContactView
+    val membersView = binding.membersView
+    val personnelView = binding.personnelView
+    val projectStartDate = binding.startDateView
+    val TitleView = binding.titleView
+
 
     // api 호출이 안됨. 바로 위까지는 작업이 완료 잘 됨. 로그 확인 가능
     api.requestClubData("Bearer "+at, id).enqueue(object :Callback<ClubGetData>{
@@ -43,14 +48,18 @@ class Clubscreen : AppCompatActivity() {
       override fun onResponse(call: Call<ClubGetData>, response: Response<ClubGetData>) {
         val res = response.body()?.data
         if(res != null) {
-          TitleView.setText(res.title)
+          categoryView.setText(res.category)
           ContactView.setText(res.contact)
           ContentsView.setText(res.contents)
+          CreatedDateView.setText(res.createdAt!!.slice(0..9))
+          MeetingWayView.setText(res.meetingWay)
+          membersView.setText(res.members)
           personnelView.setText(res.personnel.toString())
-          categoryView.setText(res.category)
+          projectStartDate.setText(res.projectStartTime!!.slice(0..9))
+          TitleView.setText(res.title)
         }
         else {
-          // 존재하지 않는 페이지???
+          TitleView.setText("문제가 생겼습니다.")
         }
       }
     })

@@ -4,28 +4,32 @@ import android.icu.number.IntegerWidth
 
 
 data class ClubPostData(
-  var title:String?=null,
-  var contents:String?=null,
-  var positionList :String?=null,
-  var personnel:Int?=null,
-  var techSkill:String?=null,
-  var meetingWays :String?=null,
-  var members :String?=null,
-  var category : String?=null,
+  var category : String,
+  var contact : String,
+  var contents:String,
+  // var deadLine:String,
+  var meetingWays :String,
+  var members :String,
+  var personnel:Int,
+  var positionList :String,
+  // var projectEndTime:String,
+  // var projectStartTime:String,
+  var techSkill:String,
+  var title:String,
 )
 
 data class ClubPostResponse(
-  var success : Boolean?=null,
-  var code : Int?=null,
-  var message : String?=null,
-  var data : Int?=null,
+  var success : Boolean,
+  var code : Int,
+  var message : String,
+  var data : Int,
 )
 
 data class ClubGetData(
-  var success: Boolean?=null,
-  var code: Int?=null,
-  var message: String?=null,
-  var data: ClubGetDataDto?=null,
+  var success: Boolean,
+  var code: Int,
+  var message: String,
+  var data: ClubGetDataDto,
 )
 
 data class ClubGetDataDto(
