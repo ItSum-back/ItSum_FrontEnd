@@ -68,7 +68,7 @@ class MakeClub : AppCompatActivity() {
       val title = title.text.toString()
       val contents = contents.text.toString()
       val positionList = "백엔드, 프론트엔드, 아직 못정함"
-      val personnel : Int = binding.personnel.text.toString().trim().toInt()
+      val personnel : Int = binding.personnel.text.toString().toInt()
       val techSkill = "자바, 코틀린, aws"
       val meetingWays = meetingWays.text.toString()
       val members = "의미 불명???"

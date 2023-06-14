@@ -47,6 +47,53 @@ data class ClubGetDataDto(
   var view:Int?=null,
 )
 
+data class CommentGetResponse(
+  var code: Int,
+  var message: String,
+  var success: Boolean,
+  var data: CommentDataList
+)
+
+data class CommentDataList(
+  var code: Int,
+  var msg: String,
+  var success: Boolean,
+  var data: CommentGetDto
+)
+
+data class CommentGetDto(
+  var content: List<Comment>?=null,
+  var pageable: CommentPageable,
+  var sort: CommentSort,
+  var size: Int,
+  var number: Int,
+  var first: Boolean,
+  var last: Boolean,
+  var numberOfElements: Int,
+  var empty: Boolean,
+
+)
+
+data class CommentPageable(
+  var page: Int,
+  var size: Int,
+  var sort: CommentSort
+)
+
+data class CommentSort(
+  var empty: Boolean,
+  var sorted: Boolean,
+  var unsorted: Boolean
+)
+
+data class Comment(
+  var contents: String,
+  var createdAt: String,
+  var creatorName: String,
+  var id: Int,
+  var modifiedAt: String
+)
+
 data class ClubSearchResponse(
   var success: Boolean?=null,
   var code: Int?=null,

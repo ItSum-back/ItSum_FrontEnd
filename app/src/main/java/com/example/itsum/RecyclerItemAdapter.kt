@@ -4,10 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.annotation.Nullable
 import androidx.recyclerview.widget.RecyclerView
-import com.example.itsum.retrofit.ClubPostData
 import com.example.itsum.retrofit.PostsListResponseDto
 import kotlinx.android.synthetic.main.item_view.view.*
 
@@ -39,8 +36,8 @@ class RecyclerUserAdapter(private val items: List<PostsListResponseDto>?) : Recy
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
         fun bind(listener: View.OnClickListener, item: PostsListResponseDto?) {
-            view.txtTitle.text = item?.title
-            view.txtContent.text = item?.contents
+            view.createrName.text = item?.title
+            view.createdAt.text = item?.contents
             view.setOnClickListener(listener)
         }
     }

@@ -41,6 +41,12 @@ interface APIService {
       @Path("id") id:Int
    ): Call<ClubGetData>
 
+   @GET("/comments/{postId}")
+   fun requestCommentList(
+      @Header("Authorization") accessToken:String?,
+      @Path("postId") postId:Int
+   ):Call<CommentGetResponse>
+
    @GET("/post")
    fun searchUsingGet(
       @Query("contents") contents:String?=null,
@@ -53,7 +59,7 @@ interface APIService {
       @Query("title") title:String?=null
    ):Call<ClubSearchResponse>
    companion object{
-      private const val BASE_URL = "http://192.168.35.199:8080"
+      private const val BASE_URL = "http://192.168.219.110:8080"
 
       fun create():APIService {
          val gson : Gson = GsonBuilder().setLenient().create()
