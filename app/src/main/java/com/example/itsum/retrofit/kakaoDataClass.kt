@@ -8,6 +8,8 @@ data class kakaoDataClass(
 )
 data class kakaoResponse(
   var appToken:String,
-  var isNewMember:Boolean
+  var isNewMember:Boolean,
+  var socialId:String,
+  var userName:String,
 )
 

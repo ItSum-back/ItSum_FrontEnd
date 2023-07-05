@@ -46,7 +46,6 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private var tempTokenSave: String = ""
     val api = APIService.create()
     val atm = ATM
     private lateinit var auth: FirebaseAuth
@@ -85,7 +84,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.loginBtn.setOnClickListener {  //로그인버튼 눌렀을 때
             val intent = Intent(this, Home::class.java)
-            atm.setToken(tempTokenSave)
             finish()
             startActivity(intent)
         }
@@ -126,7 +124,9 @@ class MainActivity : AppCompatActivity() {
                 println("response = " + response.body())
                 println("oauth response = " + token.accessToken)
                 println("성공")
-                tempTokenSave = response.body()!!.appToken
+                ATM.setToken(response.body()!!.appToken)
+                ATM.setId(response.body()!!.socialId)
+                ATM.setName(response.body()!!.userName)
 
             }
         })

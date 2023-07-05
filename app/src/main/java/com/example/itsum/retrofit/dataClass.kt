@@ -7,13 +7,14 @@ data class ClubPostData(
   var category : String,
   var contact : String,
   var contents:String,
-  // var deadLine:String,
+  var deadLine:String,
   var meetingWays :String,
   var members :String,
   var personnel:Int,
   var positionList :String,
-  // var projectEndTime:String,
-  // var projectStartTime:String,
+  var projectEndTime:String,
+  var projectStartTime:String,
+  var socialId: String,
   var techSkill:String,
   var title:String,
 )
@@ -46,6 +47,7 @@ data class ClubGetDataDto(
   var positionList: String?=null,
   var projectEndTime: String?=null,
   var projectStartTime: String?=null,
+  var socialId:String,
   var techSkill: String?=null,
   var title: String?=null,
   var view:Int?=null,
@@ -96,6 +98,20 @@ data class Comment(
   var creatorName: String,
   var id: Int,
   var modifiedAt: String
+)
+
+data class postComment(
+  var contents: String,
+  var creatorName : String,
+  var post_id : Int,
+  var socialId: String
+)
+
+data class postCommentResponse(
+  var code: Int?=null,
+  var data: Int?=null,
+  var message: String,
+  var success: Boolean,
 )
 
 data class ClubSearchResponse(

@@ -3,6 +3,7 @@ package com.example.itsum
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.example.itsum.databinding.ActivityClubscreenBinding
 import com.example.itsum.retrofit.*
 import kotlinx.android.synthetic.main.activity_clubscreen.*
@@ -22,21 +23,7 @@ class Clubscreen : AppCompatActivity() {
     setContentView(binding.root)
     val id = intent.getIntExtra("id", 0)
     val at = atm.getToken()
-
-    clubScreenCloseBtn.setOnClickListener{
-      finish()
-    }
-
-    val categoryView = binding.categoryView
-    val ContactView = binding.onofflineView
-    val ContentsView = binding.contentsView
-    val CreatedDateView = binding.createdDateView
-    val MeetingWayView = binding.ContactView
-    val membersView = binding.membersView
-    val personnelView = binding.personnelView
-    val projectStartDate = binding.startDateView
-    val TitleView = binding.titleView
-
+    val socialId = atm.getId()
 
     // api 호출이 안됨. 바로 위까지는 작업이 완료 잘 됨. 로그 확인 가능
     api.requestClubData("Bearer "+at, id).enqueue(object :Callback<ClubGetData>{
@@ -47,16 +34,26 @@ class Clubscreen : AppCompatActivity() {
       }
       override fun onResponse(call: Call<ClubGetData>, response: Response<ClubGetData>) {
         val res = response.body()?.data
-        if(res != null) {
-          categoryView.setText(res.category)
-          ContactView.setText(res.contact)
-          ContentsView.setText(res.contents)
-          CreatedDateView.setText(res.createdAt!!.slice(0..9))
-          MeetingWayView.setText(res.meetingWay)
-          membersView.setText(res.members)
-          personnelView.setText(res.personnel.toString())
-          projectStartDate.setText(res.projectStartTime!!.slice(0..9))
+        if(res != null) { // 각 데이터 표시
           TitleView.setText(res.title)
+          userNameView.setText(res.members)
+          CreatedAtView.setText(res.createdAt!!.substring(0,9))
+          categoryView.setText(res.category)
+          contactView.setText(res.contact)
+          personnelView.setText(res.personnel.toString())
+          meetingWayView.setText(res.meetingWay)
+          startTimeView.setText(res.projectStartTime!!.substring(0,9))
+          endTimeView.setText(res.projectEndTime!!.substring(0,9))
+          deadlineView.setText(res.deadline!!.substring(0,9))
+          positionListView.setText(res.positionList)
+          techskillView.setText(res.techSkill)
+          screencontents.setText(res.contents)
+        }
+        if(socialId == res!!.socialId) { // 유저와 생성자 아이디 불일치 시 수정, 삭제 버튼 가리기
+          Insbtn.visibility = View.VISIBLE
+          Insbtn.isEnabled = false
+          Dltbtn.visibility = View.VISIBLE
+          Dltbtn.isEnabled = false
         }
         else {
           TitleView.setText("문제가 생겼습니다.")
@@ -64,22 +61,54 @@ class Clubscreen : AppCompatActivity() {
       }
     })
 
-    // 댓글 리사이클러뷰
-    api.requestCommentList("Bearer "+at, id).enqueue(object :Callback<CommentGetResponse>{
-      override fun onResponse(
-        call: Call<CommentGetResponse>,
-        response: Response<CommentGetResponse>
-      ) {if (response.body()?.data?.data?.content != null) {
+    fun getComment() {
+      api.requestCommentList("Bearer "+at, id).enqueue(object :Callback<CommentGetResponse>{
+        override fun onResponse(
+          call: Call<CommentGetResponse>,
+          response: Response<CommentGetResponse>
+        ) {if (response.body()?.data?.data?.content != null) {
+          println(response.body()?.data?.data?.content)
           val adapter = CommentRecyclerAdapter(response.body()?.data?.data?.content)
           CommentList.adapter = adapter
         }
-      }
-      override fun onFailure(call: Call<CommentGetResponse>, t: Throwable) {
-        println("코멘트 데이터 없음" + t.message)
-      }
-    })
+        }
+        override fun onFailure(call: Call<CommentGetResponse>, t: Throwable) {
+          println("코멘트 데이터 없음" + t.message)
+        }
+      })
+    }
 
+    getComment()
+
+    clubScreenCloseBtn.setOnClickListener{
+      finish()
+    }
+    Insbtn.setOnClickListener{
+      val makeClubIntent = Intent(this, MakeClub::class.java)
+      startActivity(makeClubIntent)
+      finish()
+    }
+    Dltbtn.setOnClickListener{
+      api.DeleteClubData("Bearer "+at, id)
+    }
+
+    // 댓글 작성
+    commentsubmit.setOnClickListener{
+      if(commentEdit.text.toString() !== ""){
+        val data = postComment(commentEdit.text.toString(), atm.getName(), id, atm.getId())
+        api.postComment("Bearer "+at, id, data).enqueue(object :Callback<postCommentResponse>{
+          override fun onFailure(call: Call<postCommentResponse>, t: Throwable) {
+            println("코멘트 작성 응답 오류")
+          }
+          override fun onResponse(
+            call: Call<postCommentResponse>,
+            response: Response<postCommentResponse>
+          ) {
+            commentEdit.setText("")
+            getComment()
+          }
+        })
+      }
+    }
   }
-
-
 }

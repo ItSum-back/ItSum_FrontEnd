@@ -9,11 +9,13 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 import retrofit2.http.Path
 
@@ -25,6 +27,24 @@ interface APIService {
       @Body parameters : ClubPostData
    ): Call<ClubPostResponse>
 
+   @GET("/post/{id}")
+   fun requestClubData(
+      @Header("Authorization") accessToken:String?,
+      @Path("id") id:Int
+   ): Call<ClubGetData>
+
+   @PUT("/post/{id}")
+   fun PutClubData(
+      @Header("Authorization") accessToken:String?,
+      @Path("id") id:Int
+   ): Call<Void>
+
+   @DELETE("/post/{id}")
+   fun DeleteClubData(
+      @Header("Authorization") accessToken:String?,
+      @Path("id") id:Int
+   ): Call<Void>
+
    @POST("/auth/kakao")
    fun kakaoLoginAuth(
       @Body accessToken: String,
@@ -35,16 +55,17 @@ interface APIService {
       @Body accessToken: String
    ): Call<googleResponse>
 
-   @GET("/post/{id}")
-   fun requestClubData(
+   @POST("/comments/{postId}")
+   fun postComment(
       @Header("Authorization") accessToken:String?,
-      @Path("id") id:Int
-   ): Call<ClubGetData>
+      @Path("postId") postId:Int,
+      @Body parameters: postComment
+   ):Call<postCommentResponse>
 
    @GET("/comments/{postId}")
    fun requestCommentList(
       @Header("Authorization") accessToken:String?,
-      @Path("postId") postId:Int
+      @Path("postId") postId:Int,
    ):Call<CommentGetResponse>
 
    @GET("/post")
@@ -72,10 +93,22 @@ interface APIService {
 class ATM{
    companion object{
       private var token:String=""
+      private var socialId:String=""
+      private var userName:String=""
       fun getToken():String = this.token
+      fun getId():String = this.socialId
+      fun getName():String = this.userName
       fun setToken(token:String) {
          this.token = token
          println("토큰" + token)
+      }
+      fun setId(socialId:String) {
+         this.socialId = socialId
+         println("소셜아이디" + socialId)
+      }
+      fun setName(userName:String) {
+         this.userName = userName
+         println("유저닉네임" + userName)
       }
    }
 
