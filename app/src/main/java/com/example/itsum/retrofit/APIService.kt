@@ -34,13 +34,14 @@ interface APIService {
    ): Call<ClubGetData>
 
    @PUT("/post/{id}")
-   fun PutClubData(
+   fun requestClubPut(
       @Header("Authorization") accessToken:String?,
-      @Path("id") id:Int
-   ): Call<Void>
+      @Path("id") id:Int,
+      @Body parameters : ClubPutData
+   ): Call<ClubPutResponse>
 
    @DELETE("/post/{id}")
-   fun DeleteClubData(
+   fun requestClubDelete(
       @Header("Authorization") accessToken:String?,
       @Path("id") id:Int
    ): Call<Void>

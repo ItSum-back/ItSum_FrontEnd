@@ -53,6 +53,25 @@ data class ClubGetDataDto(
   var view:Int?=null,
 )
 
+data class ClubPutData(
+  var category : String,
+  var contact : String,
+  var contents:String,
+  var deadLine:String,
+  var meetingWays :String,
+  var members :String,
+  var personnel:Int,
+  var positionList :String,
+  var projectEndTime:String,
+  var projectStartTime:String,
+  var techSkill:String,
+  var title:String,
+)
+
+data class ClubPutResponse(
+  val void: Void
+)
+
 data class CommentGetResponse(
   var code: Int,
   var message: String,

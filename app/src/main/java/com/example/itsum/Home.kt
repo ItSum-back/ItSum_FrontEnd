@@ -129,6 +129,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 //모집만들기 눌렀을 때
                 val makeClubIntent = Intent(this, MakeClub::class.java)
                 startActivity(makeClubIntent)
+                makeClubIntent.putExtra("isIns", false)
                 return super.onOptionsItemSelected(item)
             }
             R.id.menu_item2 -> {

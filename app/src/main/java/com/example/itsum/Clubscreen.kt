@@ -86,10 +86,12 @@ class Clubscreen : AppCompatActivity() {
     Insbtn.setOnClickListener{
       val makeClubIntent = Intent(this, MakeClub::class.java)
       startActivity(makeClubIntent)
+      makeClubIntent.putExtra("isIns", true)
+      makeClubIntent.putExtra("postId", id)
       finish()
     }
     Dltbtn.setOnClickListener{
-      api.DeleteClubData("Bearer "+at, id)
+      api.requestClubDelete("Bearer "+at, id)
     }
 
     // 댓글 작성
@@ -104,6 +106,7 @@ class Clubscreen : AppCompatActivity() {
             call: Call<postCommentResponse>,
             response: Response<postCommentResponse>
           ) {
+            // 코멘트 초기화, 댓글 재로딩
             commentEdit.setText("")
             getComment()
           }

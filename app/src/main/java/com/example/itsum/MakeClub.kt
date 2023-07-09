@@ -9,11 +9,11 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import com.example.itsum.databinding.ActivityMakeClubBinding
-import com.example.itsum.retrofit.APIService
-import com.example.itsum.retrofit.ATM
-import com.example.itsum.retrofit.ClubPostData
-import com.example.itsum.retrofit.ClubPostResponse
+import com.example.itsum.retrofit.*
+import kotlinx.android.synthetic.main.activity_clubscreen.*
 import kotlinx.android.synthetic.main.activity_make_club.*
+import kotlinx.android.synthetic.main.activity_make_club.deadlineView
+import kotlinx.android.synthetic.main.activity_make_club.positionListView
 import retrofit2.*
 
 class MakeClub : AppCompatActivity() {
@@ -25,6 +25,9 @@ class MakeClub : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     _binding = ActivityMakeClubBinding.inflate(layoutInflater)
     setContentView(binding.root)
+
+    val id = intent.getIntExtra("postId", 0)
+    val isIns = intent.getBooleanExtra("isIns", false)
 
     makeClubCloseBtn.setOnClickListener{
       finish()
@@ -65,8 +68,42 @@ class MakeClub : AppCompatActivity() {
     val techSkill = binding.techSkill // 테크스킬
     val title = binding.title // 제목
 
+    // 유효성 검증은?
+
     // 만약 새로 만들기로 들어온다 -> 데이터 없이 페이지 렌더링
-    val accessToken = at.getToken()
+
+    // 수정하기로 들어왔다면? -> 데이터 호출
+
+    if(isIns) {
+      api.requestClubData("Bearer "+at, id).enqueue(object :Callback<ClubGetData>{
+        override fun onFailure(call: Call<ClubGetData>, t: Throwable) {
+          val goHomeIntent = Intent(this@MakeClub, Home::class.java)
+          finish()
+          startActivity(goHomeIntent)
+        }
+        override fun onResponse(call: Call<ClubGetData>, response: Response<ClubGetData>) {
+          val res = response.body()?.data
+          if(res != null) { // 각 데이터 표시
+            title.setText(res.title)
+            category.setSelection(0)
+            contact.setSelection(0)
+            personnel.setText(res.personnel.toString())
+            meetingWays.setText(res.meetingWay)
+            projectStartTime.setText(res.projectStartTime!!.substring(0,9))
+            projectendtime.setText(res.projectEndTime!!.substring(0,9))
+            deadline.setText(res.deadline!!.substring(0,9))
+            positionList.setText(res.positionList)
+            techSkill.setText(res.techSkill)
+            contents.setText(res.contents)
+            createClubBtn.setText("수정하기")
+          }
+          else {
+            TitleView.setText("문제가 생겼습니다.")
+          }
+        }
+      })
+    }
+
     binding.createClubBtn.setOnClickListener{
       val category = category.selectedItem.toString()
       val contact = contact.selectedItem.toString()
@@ -83,23 +120,46 @@ class MakeClub : AppCompatActivity() {
       val title = title.text.toString()
 
       val data = ClubPostData(category,contact,contents,deadline,meetingWays,members,personnel,positionList,projectStartTime,projectendtime,socialId,techSkill,title)
-      api.requestClubPost("Bearer ${accessToken}" ,data).enqueue(object : Callback<ClubPostResponse> {
-        override fun onFailure(call: Call<ClubPostResponse>, t: Throwable) {
-          val goHomeIntent = Intent(this@MakeClub, Home::class.java)
-          finish()
-          startActivity(goHomeIntent)
-        }
+      val putdata = ClubPutData(category,contact,contents,deadline,meetingWays,members,personnel,positionList,projectStartTime,projectendtime,techSkill,title)
+      // 수정하기로 들어온게 아니면 post, 수정하기로 들어왔으면 put
+      if(!isIns){
+        api.requestClubPost("Bearer ${at.getToken()}" ,data).enqueue(object : Callback<ClubPostResponse> {
+          override fun onFailure(call: Call<ClubPostResponse>, t: Throwable) {
+            val goHomeIntent = Intent(this@MakeClub, Home::class.java)
+            finish()
+            startActivity(goHomeIntent)
+            println("모임 포스트 오류"+t.message)
+          }
 
-        override fun onResponse(call: Call<ClubPostResponse>, response: Response<ClubPostResponse>) {
-          val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
-          clubScreenIntent.putExtra("id", response.body()?.data)
-          finish()
-          startActivity(clubScreenIntent)
-        }
+          override fun onResponse(call: Call<ClubPostResponse>, response: Response<ClubPostResponse>) {
+            val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
+            clubScreenIntent.putExtra("id", response.body()?.data)
+            finish()
+            startActivity(clubScreenIntent)
+          }
 
-      })
+        })
+      } else {
+        api.requestClubPut("Bearer ${at.getToken()}",id, putdata).enqueue(object : Callback<ClubPutResponse>{
+          override fun onFailure(call: Call<ClubPutResponse>, t: Throwable) {
+            val goHomeIntent = Intent(this@MakeClub, Home::class.java)
+            finish()
+            startActivity(goHomeIntent)
+            println("모임 수정 오류"+t.message)
+          }
 
-      // 만약 수정하기로 들어온다 -> 서버에서 데이터 받아온 후 페이지 렌더링 및 데이터 뿌림
+          override fun onResponse(
+            call: Call<ClubPutResponse>,
+            response: Response<ClubPutResponse>
+          ) {
+            val clubScreenIntent = Intent(this@MakeClub, Clubscreen::class.java)
+            clubScreenIntent.putExtra("id", id)
+            finish()
+            startActivity(clubScreenIntent)
+          }
+        })
+
+      }
     }
   }
 }
