@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="240dp"
+        android:layout_height="160dp"
         android:layout_marginTop="160dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,35 +30,47 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:text="내 닉네임"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView24"
-            app:layout_constraintVertical_bias="0.0"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="120dp"
+            android:id="@+id/userNameInsBtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이미지 제거"
-            tools:layout_editor_absoluteX="228dp"
-            tools:layout_editor_absoluteY="156dp" />
+            android:layout_marginEnd="32dp"
+            android:text="수정하기"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="이미지 바꾸기"
-            tools:layout_editor_absoluteX="228dp"
-            tools:layout_editor_absoluteY="80dp" />
+        <EditText
+            android:id="@+id/userNameEditView"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="닉네임"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,7 +86,7 @@
             android:id="@+id/textView32"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:text="내가 만든 모임(타이틀)"
+            android:text="내 모임들(타이틀)"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

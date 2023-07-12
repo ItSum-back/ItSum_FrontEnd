@@ -51,9 +51,7 @@ class Clubscreen : AppCompatActivity() {
         }
         if(socialId == res!!.socialId) { // 유저와 생성자 아이디 불일치 시 수정, 삭제 버튼 가리기
           Insbtn.visibility = View.VISIBLE
-          Insbtn.isEnabled = false
           Dltbtn.visibility = View.VISIBLE
-          Dltbtn.isEnabled = false
         }
         else {
           TitleView.setText("문제가 생겼습니다.")

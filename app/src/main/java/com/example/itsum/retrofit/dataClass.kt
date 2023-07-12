@@ -133,6 +133,10 @@ data class postCommentResponse(
   var success: Boolean,
 )
 
+data class UserNameChangeResponse(
+  var void: Void
+)
+
 data class ClubSearchResponse(
   var success: Boolean?=null,
   var code: Int?=null,

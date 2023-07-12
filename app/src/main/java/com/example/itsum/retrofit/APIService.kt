@@ -46,6 +46,13 @@ interface APIService {
       @Path("id") id:Int
    ): Call<Void>
 
+   @PUT("/user/{id}")
+   fun requestUserNameChange(
+      @Header("Authorization") accessToken:String?,
+      @Path("id") id:Int,
+      @Body UserName:String
+   ):Call<UserNameChangeResponse>
+
    @POST("/auth/kakao")
    fun kakaoLoginAuth(
       @Body accessToken: String,
@@ -78,7 +85,8 @@ interface APIService {
       @Query("size") pageSize: Int?=null,
       @Query("sort", encoded=true) sortSorted:String?=null,
       @Query("techSkill") techskill:String?=null,
-      @Query("title") title:String?=null
+      @Query("title") title:String?=null,
+      @Query("members") members:String?=null
    ):Call<ClubSearchResponse>
    companion object{
       private const val BASE_URL = "http://192.168.219.110:8080"
