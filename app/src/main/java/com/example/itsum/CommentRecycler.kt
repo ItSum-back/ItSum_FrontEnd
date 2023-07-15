@@ -35,7 +35,7 @@ class CommentRecyclerAdapter(private val items: List<Comment>?) : RecyclerView.A
         fun bind(item: Comment?) {
             view.createrName.text = item?.creatorName
             view.createdAt.text = item?.createdAt
-            view.contents.text = item?.contents
+            view.commentcontents.text = item?.contents
         }
     }
 

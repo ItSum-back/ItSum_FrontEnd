@@ -65,7 +65,6 @@ class Clubscreen : AppCompatActivity() {
           call: Call<CommentGetResponse>,
           response: Response<CommentGetResponse>
         ) {if (response.body()?.data?.data?.content != null) {
-          println(response.body()?.data?.data?.content)
           val adapter = CommentRecyclerAdapter(response.body()?.data?.data?.content)
           CommentList.adapter = adapter
         }

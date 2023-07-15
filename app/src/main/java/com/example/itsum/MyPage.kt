@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import com.example.itsum.retrofit.APIService
 import com.example.itsum.retrofit.ATM
+import com.example.itsum.retrofit.ClubSearchResponse
 import com.example.itsum.retrofit.UserNameChangeResponse
 import kotlinx.android.synthetic.main.activity_my_page.*
 import retrofit2.Call
@@ -53,5 +54,19 @@ class MyPage : AppCompatActivity() {
         })
       }
     }
+
+    api.searchUsingGet(members = atm.getName()).enqueue(object : Callback<ClubSearchResponse>{
+      override fun onFailure(call: Call<ClubSearchResponse>, t: Throwable) {
+        println("내 모임 불러오기 실패 " + t.message)
+      }
+      override fun onResponse(
+        call: Call<ClubSearchResponse>,
+        response: Response<ClubSearchResponse>
+      ) {
+        val adapter = myClubRecyclerAdapter(response.body()?.data?.content)
+        myClubRecycler.adapter = adapter
+      }
+    })
+
   }
 }

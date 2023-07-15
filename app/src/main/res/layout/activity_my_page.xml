@@ -93,47 +93,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView32"
-            app:layout_constraintVertical_bias="0.0">
-
-            <TextView
-                android:id="@+id/textView35"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="모임 제목"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="16dp" />
-
-            <TextView
-                android:id="@+id/textView36"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="작성일"
-                tools:layout_editor_absoluteX="356dp"
-                tools:layout_editor_absoluteY="115dp" />
-
-            <TextView
-                android:id="@+id/textView37"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="조회수/스크랩수/지원수"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="115dp" />
-
-            <TextView
-                android:id="@+id/textView38"
-                android:layout_width="379dp"
-                android:layout_height="64dp"
-                android:text="내용 미리보기"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="45dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myClubRecycler"
+            android:layout_width="409dp"
+            android:layout_height="178dp"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="61dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
