@@ -14,6 +14,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Query
@@ -46,11 +47,11 @@ interface APIService {
       @Path("id") id:Int
    ): Call<Void>
 
-   @PUT("/user/{id}")
+   @PATCH("/mypage/{id}")
    fun requestUserNameChange(
       @Header("Authorization") accessToken:String?,
-      @Path("id") id:Int,
-      @Body UserName:String
+      @Path("id") id:String?,
+      @Body nickName:String
    ):Call<UserNameChangeResponse>
 
    @POST("/auth/kakao")
@@ -86,10 +87,10 @@ interface APIService {
       @Query("sort", encoded=true) sortSorted:String?=null,
       @Query("techSkill") techskill:String?=null,
       @Query("title") title:String?=null,
-      @Query("members") members:String?=null
+      @Query("nickName") members:String?=null
    ):Call<ClubSearchResponse>
    companion object{
-      private const val BASE_URL = "http://192.168.219.110:8080"
+      private const val BASE_URL = "http://192.168.219.112:8080"
 
       fun create():APIService {
          val gson : Gson = GsonBuilder().setLenient().create()

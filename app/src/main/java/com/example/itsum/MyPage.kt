@@ -26,16 +26,16 @@ class MyPage : AppCompatActivity() {
     userName.setText(atm.getName())
 
     userNameInsBtn.setOnClickListener{
-      if(isInsBtnClicked===false){
+      if(!isInsBtnClicked){
         isInsBtnClicked = true
         userName.visibility = View.GONE
         userNameEditView.visibility = View.VISIBLE
         userNameEditView.setText(atm.getName())
         userNameInsBtn.setText("확인")
       }
-      if(isInsBtnClicked===true){
-        var UserName = userName.text.toString()
-        api.requestUserNameChange("Bearer ${atm.getToken()}", atm.getId().toInt(), UserName).enqueue(object : Callback<UserNameChangeResponse>{
+      else{
+        var editedUserName = userNameEditView.text.toString()
+        api.requestUserNameChange("Bearer ${atm.getToken()}", atm.getId(), editedUserName).enqueue(object : Callback<UserNameChangeResponse>{
           override fun onFailure(call: Call<UserNameChangeResponse>, t: Throwable) {
             println("닉네임 변경 실패 "+t.message)
           }
@@ -44,11 +44,11 @@ class MyPage : AppCompatActivity() {
             response: Response<UserNameChangeResponse>
           ) {
             isInsBtnClicked = false
-            Toast.makeText(applicationContext, "닉네임이 변경되었습니다.",Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "닉네임이 변경되었습니다. "+editedUserName,Toast.LENGTH_SHORT).show()
             userNameEditView.visibility = View.GONE
             userName.visibility = View.VISIBLE
-            userName.setText(UserName)
-            atm.setName(UserName)
+            userName.setText(editedUserName)
+            atm.setName(editedUserName)
             userNameInsBtn.setText("수정하기")
           }
         })

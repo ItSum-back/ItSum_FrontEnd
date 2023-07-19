@@ -134,7 +134,10 @@ data class postCommentResponse(
 )
 
 data class UserNameChangeResponse(
-  var void: Void
+  var code: Int?=null,
+  var data: Object,
+  var message: String,
+  var success: Boolean,
 )
 
 data class ClubSearchResponse(
