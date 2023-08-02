@@ -1,17 +1,12 @@
 package com.example.itsum.retrofit
 
-import com.example.itsum.R
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import kotlinx.coroutines.runBlocking
-import org.jetbrains.annotations.TestOnly
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -89,6 +84,11 @@ interface APIService {
       @Query("title") title:String?=null,
       @Query("nickName") members:String?=null
    ):Call<ClubSearchResponse>
+
+   // 만약 모든 레트로핏에 헤더를 넣는다면 카카오로그인같이 헤더를 요구하지 않는 함수에도 헤더가 포함됨
+   // 그리고 아래의 토큰, 소셜아이디 등의 관리 시스템을 여기로 합쳐야함
+   // 근데 마음은 하드코딩이 편해서 바꿀 예정은 없음... 그냥 조금 귀찮고 말지...
+
    companion object{
       private const val BASE_URL = "http://192.168.219.112:8080"
 
@@ -121,5 +121,4 @@ class ATM{
          println("유저닉네임" + userName)
       }
    }
-
 }

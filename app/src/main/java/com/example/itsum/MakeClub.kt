@@ -68,13 +68,9 @@ class MakeClub : AppCompatActivity() {
     val techSkill = binding.techSkill // 테크스킬
     val title = binding.title // 제목
 
-    // 유효성 검증은?
-
     // 만약 새로 만들기로 들어온다 -> 데이터 없이 페이지 렌더링
 
-    // 수정하기로 들어왔다면? -> 데이터 호출
-
-    if(isIns) {
+    if(isIns) { // 수정하기로 들어왔다면? -> 데이터 호출
       api.requestClubData("Bearer "+at, id).enqueue(object :Callback<ClubGetData>{
         override fun onFailure(call: Call<ClubGetData>, t: Throwable) {
           val goHomeIntent = Intent(this@MakeClub, Home::class.java)
@@ -85,8 +81,10 @@ class MakeClub : AppCompatActivity() {
           val res = response.body()?.data
           if(res != null) { // 각 데이터 표시
             title.setText(res.title)
-            category.setSelection(0)
-            contact.setSelection(0)
+            var categoryvalue = if(res.category==="프로젝트") 0 else 1
+            category.setSelection(categoryvalue)
+            var contactvalue = if(res.contact==="온라인") 0 else 1
+            contact.setSelection(contactvalue)
             personnel.setText(res.personnel.toString())
             meetingWays.setText(res.meetingWay)
             projectStartTime.setText(res.projectStartTime!!.substring(0,9))
@@ -104,7 +102,11 @@ class MakeClub : AppCompatActivity() {
       })
     }
 
-    binding.createClubBtn.setOnClickListener{
+    // validation 파트 여기에 들어가야함
+    // 후에 버튼 클릭 검증 필요
+    // 먼저 버튼을 btn.enable === isEnable.disable? 정도로 비활성화 해주고  모든 칸이 알맞게 채워지면 비활성화된 버튼을 활성화 해주는 코드?
+
+    binding.createClubBtn.setOnClickListener{ // 버튼 클릭시
       val category = category.selectedItem.toString()
       val contact = contact.selectedItem.toString()
       val contents = contents.text.toString()
