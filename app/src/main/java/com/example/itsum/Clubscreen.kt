@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.example.itsum.databinding.ActivityClubscreenBinding
 import com.example.itsum.retrofit.*
 import kotlinx.android.synthetic.main.activity_clubscreen.*
@@ -26,9 +27,10 @@ class Clubscreen : AppCompatActivity() {
     val socialId = atm.getId()
 
     // api 호출이 안됨. 바로 위까지는 작업이 완료 잘 됨. 로그 확인 가능
-    api.requestClubData("Bearer "+at, id).enqueue(object :Callback<ClubGetData>{
+    api.requestClubData("Bearer "+atm.getToken(), id).enqueue(object :Callback<ClubGetData>{
       override fun onFailure(call: Call<ClubGetData>, t: Throwable) {
         val goHomeIntent = Intent(this@Clubscreen, Home::class.java)
+        Toast.makeText(applicationContext, "api응답없음"+t.message, Toast.LENGTH_SHORT).show()
         finish()
         startActivity(goHomeIntent)
       }

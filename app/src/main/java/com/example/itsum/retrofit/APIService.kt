@@ -74,6 +74,7 @@ interface APIService {
 
    @GET("/post")
    fun searchUsingGet(
+      @Header("Authorization") accessToken:String?,
       @Query("contents") contents:String?=null,
       @Query("meetingWay") meetingway:String?=null,
       @Query("page") page: Int?=null,

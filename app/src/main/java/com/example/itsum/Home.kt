@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.dialog.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Header
 
 
 class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -35,6 +36,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     lateinit var drawerLayout:DrawerLayout
     private lateinit var binding:ActivityHomeBinding
     private val api = APIService.create()
+    private val at = ATM
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -56,7 +58,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         navigationView.setNavigationItemSelectedListener(this)
 
         //리사이클러뷰
-        api.searchUsingGet().enqueue(object :Callback<ClubSearchResponse>{
+        api.searchUsingGet("Bearer"+ at.getToken()).enqueue(object :Callback<ClubSearchResponse>{
             override fun onResponse(call: Call<ClubSearchResponse>, response: Response<ClubSearchResponse>) {
                 if (response.body()?.data != null){
                     val adapter = RecyclerUserAdapter(response.body()?.data?.content)
@@ -86,7 +88,7 @@ class Home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             okButton.setOnClickListener {
                 val title = mDialogView.findViewById<EditText>(R.id.title_detail).text.toString()
                 val tech = mDialogView.findViewById<EditText>(R.id.tech_skill).text.toString()
-                api.searchUsingGet(title = title, techskill = tech).enqueue(object :Callback<ClubSearchResponse>{
+                api.searchUsingGet("Bearer"+ at.getToken(),title = title, techskill = tech).enqueue(object :Callback<ClubSearchResponse>{
                     override fun onResponse(call: Call<ClubSearchResponse>, response: Response<ClubSearchResponse>) {
                         if (response.body()?.data != null){
                             println("성공"+response.body()?.data?.content)

@@ -71,7 +71,7 @@ class MakeClub : AppCompatActivity() {
     // 만약 새로 만들기로 들어온다 -> 데이터 없이 페이지 렌더링
 
     if(isIns) { // 수정하기로 들어왔다면? -> 데이터 호출
-      api.requestClubData("Bearer "+at, id).enqueue(object :Callback<ClubGetData>{
+      api.requestClubData("Bearer "+at.getToken(), id).enqueue(object :Callback<ClubGetData>{
         override fun onFailure(call: Call<ClubGetData>, t: Throwable) {
           val goHomeIntent = Intent(this@MakeClub, Home::class.java)
           finish()

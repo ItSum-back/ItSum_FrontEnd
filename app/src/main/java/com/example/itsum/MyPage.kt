@@ -55,7 +55,7 @@ class MyPage : AppCompatActivity() {
       }
     }
 
-    api.searchUsingGet(members = atm.getName()).enqueue(object : Callback<ClubSearchResponse>{
+    api.searchUsingGet("Bearer"+atm.getToken(),members = atm.getName()).enqueue(object : Callback<ClubSearchResponse>{
       override fun onFailure(call: Call<ClubSearchResponse>, t: Throwable) {
         println("내 모임 불러오기 실패 " + t.message)
       }
